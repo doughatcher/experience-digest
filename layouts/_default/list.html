@@ -1,32 +1,24 @@
 {{ define "main" }}
-<div class="list-header">
-    {{ if .IsHome }}
-    <h1>{{ .Site.Title }}</h1>
-    {{ else }}
-    <h1>
-        {{ if eq .Kind "taxonomy" }}
-            {{ .Title }}
-        {{ else if eq .Kind "term" }}
-            {{ .Title }}
+<div class="page-wrapper">
+    <div class="list-header">
+        {{ if .IsHome }}
+        <h1>{{ .Site.Title }}</h1>
         {{ else }}
-            {{ .Title }}
+        <h1>{{ .Title }}</h1>
         {{ end }}
-    </h1>
-    {{ end }}
-    
-    {{ if .Content }}
-    <div class="list-description">
-        {{ .Content }}
+        
+        {{ if .Content }}
+        <div class="list-description">
+            {{ .Content }}
+        </div>
+        {{ end }}
     </div>
-    {{ end }}
-</div>
 
-<div class="posts-list">
-    {{ $paginator := .Paginate .Pages (.Site.Params.posts_per_page | default 20) }}
-    
-    {{ range $paginator.Pages }}
-    <article class="post-preview{{ if .Params.microblog }} micro-post{{ end }}">
-        <div class="post-content">
+    <div class="posts-list">
+        {{ $paginator := .Paginate .Pages (.Site.Params.posts_per_page | default 20) }}
+        
+        {{ range $paginator.Pages }}
+        <article class="post-preview{{ if .Params.microblog }} micro-post{{ end }}">
             {{ if and (not .Params.microblog) .Title }}
             <h2 class="post-title">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
@@ -57,20 +49,20 @@
                 </div>
                 {{ end }}
             </div>
-        </div>
-    </article>
-    {{ end }}
-    
-    {{ if gt $paginator.TotalPages 1 }}
-    <nav class="pagination">
-        {{ if $paginator.HasPrev }}
-        <a href="{{ $paginator.Prev.URL }}" class="prev">← Newer Posts</a>
+        </article>
         {{ end }}
         
-        {{ if $paginator.HasNext }}
-        <a href="{{ $paginator.Next.URL }}" class="next">Older Posts →</a>
+        {{ if gt $paginator.TotalPages 1 }}
+        <nav class="pagination">
+            {{ if $paginator.HasPrev }}
+            <a href="{{ $paginator.Prev.URL }}" class="prev">← Newer Posts</a>
+            {{ end }}
+            
+            {{ if $paginator.HasNext }}
+            <a href="{{ $paginator.Next.URL }}" class="next">Older Posts →</a>
+            {{ end }}
+        </nav>
         {{ end }}
-    </nav>
-    {{ end }}
+    </div>
 </div>
 {{ end }}

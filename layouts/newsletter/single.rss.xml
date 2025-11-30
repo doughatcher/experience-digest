@@ -1,2 +1,0 @@
-{{- /* Disable RSS output for individual newsletter pages */ -}}
-{{- /* Individual newsletters should only output HTML */ -}}

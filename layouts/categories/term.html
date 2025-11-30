@@ -1,281 +1,42 @@
 {{ define "main" }}
-{{ partial "common-styles.html" . }}
-<style>
-    .category-page {
-        color: #e2e8f0;
-    }
-    
-    .category-header {
-        background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f97316 100%);
-        color: white;
-        padding: 3rem 2rem;
-        border-radius: 20px;
-        margin-bottom: 3rem;
-        box-shadow: 0 20px 40px rgba(239,68,68,0.3);
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.1);
-        text-align: center;
-    }
-    
-    .category-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 200px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
-        transform: translate(50%, -50%);
-    }
-    
-    .category-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: white;
-        margin-bottom: 0.5rem;
-        text-transform: capitalize;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .category-description {
-        font-size: 1.1rem;
-        color: rgba(255,255,255,0.9);
-        position: relative;
-        z-index: 1;
-    }
-    
-    .category-stats {
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        margin-top: 1rem;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .category-stat {
-        font-size: 0.9rem;
-        color: rgba(255,255,255,0.8);
-    }
-    
-    .category-stat strong {
-        color: white;
-        font-weight: 700;
-    }
-    
-    .posts-list {
-        display: grid;
-        gap: 1.5rem;
-    }
-    
-    .post-card {
-        background: linear-gradient(135deg, #141414 0%, #1f1f1f 100%);
-        border: 1px solid #2a2a2a;
-        border-left: 4px solid #ef4444;
-        border-radius: 12px;
-        padding: 1.75rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    
-    .post-card:hover {
-        border-left-width: 6px;
-        border-left-color: #f97316;
-        border-color: #ef4444;
-        transform: translateX(8px);
-        box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-    }
-    
-    .post-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .post-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        flex: 1;
-    }
-    
-    .post-title a {
-        color: #f1f5f9;
-        text-decoration: none;
-        transition: color 0.2s ease;
-        font-weight: 700;
-    }
-    
-    .post-title a:hover {
-        color: #ef4444;
-    }
-    
-    .post-date {
-        flex-shrink: 0;
-        color: #94a3b8;
-        font-size: 0.9rem;
-        white-space: nowrap;
-    }
-    
-    .post-excerpt {
-        color: #cbd5e1;
-        line-height: 1.8;
-        margin-bottom: 1rem;
-        font-size: 0.95rem;
-    }
-    
-    .post-excerpt h2 {
-        color: #f87171;
-        font-size: 1rem;
-        font-weight: 700;
-        margin: 1rem 0 0.75rem 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #2a2a2a;
-    }
-    
-    .post-excerpt h3 {
-        color: #ef4444;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin: 0.75rem 0 0.5rem 0;
-    }
-    
-    .post-excerpt ul {
-        list-style: none;
-        display: grid;
-        gap: 0.4rem;
-        margin: 0.5rem 0;
-        padding: 0;
-    }
-    
-    .post-excerpt ul li {
-        display: flex;
-        gap: 0.75rem;
-        padding: 0.5rem 0.75rem;
-        background: rgba(255,255,255,0.03);
-        border-radius: 6px;
-        align-items: baseline;
-        font-size: 0.875rem;
-    }
-    
-    .post-excerpt ul li strong {
-        color: #94a3b8;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        min-width: 100px;
-        flex-shrink: 0;
-        font-weight: 600;
-    }
-    
-    .post-excerpt p {
-        margin-bottom: 0.75rem;
-        color: #cbd5e1;
-    }
-    
-    .post-excerpt strong {
-        color: #f1f5f9;
-        font-weight: 600;
-    }
-    
-    .post-excerpt a {
-        color: #60a5fa;
-        text-decoration: none;
-        transition: color 0.2s ease;
-        font-weight: 500;
-    }
-    
-    .post-excerpt a:hover {
-        color: #93c5fd;
-        text-decoration: underline;
-    }
-    
-    .post-meta {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        font-size: 0.85rem;
-    }
-    
-    .post-tag {
-        padding: 0.25rem 0.75rem;
-        background: #0f0f0f;
-        border: 1px solid #2a2a2a;
-        border-radius: 4px;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    @media (max-width: 768px) {
-        .category-header {
-            padding: 2rem 1.5rem;
-        }
-        
-        .category-title {
-            font-size: 2rem;
-        }
-        
-        .post-header {
-            flex-direction: column;
-        }
-        
-        .post-date {
-            align-self: flex-start;
-        }
-    }
-</style>
-
 <div class="page-wrapper">
-    {{ partial "site-header.html" . }}
+    <header class="page-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="page-description">{{ . }}</p>
+        {{ end }}
+        <div class="page-meta">
+            <div class="meta-item">
+                <span class="meta-icon">📄</span>
+                <span>{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
+            </div>
+        </div>
+    </header>
 
-<div class="category-page">
-    <div class="category-header">
-        <h1 class="category-title">{{ .Title }}</h1>
-        <p class="category-description">Security bulletins and updates</p>
-        <div class="category-stats">
-            <div class="category-stat"><strong>{{ len .Pages }}</strong> {{ if eq (len .Pages) 1 }}bulletin{{ else }}bulletins{{ end }}</div>
-            {{ with .Pages.ByDate.Reverse }}
-                {{ with index . 0 }}
-                    <div class="category-stat">Latest: <strong>{{ .Date.Format "Jan 2, 2006" }}</strong></div>
+    <div class="content-section">
+        <div class="card-grid">
+            {{ range .Pages }}
+            <div class="content-card">
+                <h2 class="card-title">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </h2>
+                <div class="card-meta">
+                    <span class="meta-icon">📅</span>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+                </div>
+                {{ with .Summary }}
+                <div class="card-summary">{{ . }}</div>
                 {{ end }}
+                {{ with .Params.tags }}
+                <div class="tags-container">
+                    {{ range first 3 . }}
+                    <span class="tag">{{ . }}</span>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
             {{ end }}
         </div>
     </div>
-
-    <div class="posts-list">
-        {{ range .Pages }}
-        <article class="post-card">
-            <div class="post-header">
-                <h2 class="post-title">
-                    <a href="{{ .Permalink }}">{{ .Title }}</a>
-                </h2>
-                <div class="post-date">{{ .Date.Format "Jan 2, 2006" }}</div>
-            </div>
-            
-            {{ if .Summary }}
-            <div class="post-excerpt">
-                {{ .Summary | truncate 200 }}
-            </div>
-            {{ end }}
-            
-            {{ if .Params.tags }}
-            <div class="post-meta">
-                {{ range first 3 .Params.tags }}
-                <span class="post-tag">{{ . }}</span>
-                {{ end }}
-            </div>
-            {{ end }}
-        </article>
-        {{ end }}
-    </div>
-    
-    {{ partial "site-footer.html" . }}
-</div>
-
 </div>
 {{ end }}
