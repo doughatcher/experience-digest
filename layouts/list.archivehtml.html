@@ -1,13 +1,38 @@
 {{ define "main" }}
-<div class="archive-page">
-    <h1>Archive</h1>
-    <div class="archive-list">
-        {{ range .Pages }}
-        <article class="archive-item">
-            <h2><a href="{{ .Permalink }}">{{ .Title | default "Untitled" }}</a></h2>
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-            {{ if .Summary }}
-            <p>{{ .Summary }}</p>
+<div class="page-wrapper">
+    <header class="page-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="page-description">{{ . }}</p>
+        {{ end }}
+        <div class="page-meta">
+            <div class="meta-item">
+                <span class="meta-icon">📄</span>
+                <span>{{ len .Site.RegularPages }} posts</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="posts-list">
+        {{ range .Site.RegularPages.ByDate.Reverse }}
+        <article class="news-item">
+            <div class="news-meta">
+                <time class="news-date">{{ .Date.Format "January 2, 2006" }}</time>
+                {{ if .Params.categories }}
+                <span class="news-badge">
+                    {{ range first 1 .Params.categories }}{{ . | humanize | title }}{{ end }}
+                </span>
+                {{ end }}
+            </div>
+            
+            <h2 class="news-title">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
+            
+            {{ with .Summary }}
+            <div class="content-wrapper">
+                {{ . }}
+            </div>
             {{ end }}
         </article>
         {{ end }}
