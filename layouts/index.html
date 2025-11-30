@@ -36,109 +36,384 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'adobe-clean', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #e2e8f0;
-            background: #0f0f0f;
+            color: #f5f5f5;
+            background: #1e1e1e;
             min-height: 100vh;
-            padding: 3rem 0;
         }
         
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 3rem;
-            background: #1a1a1a;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            text-align: center;
-            border: 1px solid #2a2a2a;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .container::before {
-            content: '';
-            position: absolute;
+        /* Spectrum-inspired Header */
+        .spectrum-header {
+            background: #2c2c2c;
+            border-bottom: 1px solid #3e3e3e;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ef4444, #f97316);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #ef4444;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(239,68,68,0.3);
+        .spectrum-header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 1rem;
+            justify-content: space-between;
         }
         
-        .logo svg {
-            width: 50px;
-            height: 50px;
-            fill: #ef4444;
-            filter: drop-shadow(0 0 20px rgba(239,68,68,0.3));
+        .spectrum-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
         }
         
-        .tagline {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            margin-bottom: 3rem;
+        .spectrum-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #eb1000;
+        }
+        
+        .spectrum-logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f5f5f5;
+            letter-spacing: -0.02em;
+        }
+        
+        .spectrum-nav {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+        }
+        
+        .spectrum-nav-link {
+            padding: 0.5rem 1rem;
+            color: #d1d1d1;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+        
+        .spectrum-nav-link:hover {
+            background: #3e3e3e;
+            color: #fff;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem 2rem;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0 3rem 0;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: #b3b3b3;
             font-weight: 400;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
         }
         
-        .main-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+        .stat-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.125rem;
+            background: #2c2c2c;
+            border: 1px solid #3e3e3e;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #d1d1d1;
+            font-weight: 500;
+        }
+        
+        .stat-badge-number {
+            color: #eb1000;
+            font-weight: 700;
+        }
+        
+        /* Content Sections */
+        .section {
             margin: 3rem 0;
         }
         
-        @media (max-width: 768px) {
-            .main-cards {
-                grid-template-columns: 1fr;
-            }
+        /* Two column layout for desktop */
+        .content-with-sidebar {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            margin-top: 3rem;
         }
         
-        .main-card {
-            background: #141414;
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid #2a2a2a;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
+        .main-content {
+            min-width: 0; /* Prevent grid blowout */
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .sidebar-card {
+            background: #2c2c2c;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.15s ease;
+        }
+        
+        .sidebar-card:hover {
+            border-color: #4b4b4b;
+        }
+        
+        .sidebar-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        
+        .sidebar-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.625rem 0;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        
+        .sidebar-stat:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-stat-label {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+        }
+        
+        .sidebar-stat-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #f5f5f5;
+        }
+        
+        .sidebar-stat-value.accent {
+            color: #eb1000;
+        }
+        
+        /* Ad callout with close button */
+        .ad-callout {
+            background: linear-gradient(135deg, #2c2c2c 0%, #323232 100%);
+            border: 1px solid #4b4b4b;
+            border-left: 3px solid #eb1000;
+            border-radius: 8px;
+            padding: 1.25rem;
             position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
         }
         
-        .main-card::before {
-            content: '';
+        .ad-callout.hidden {
+            display: none;
+        }
+        
+        .ad-close {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #ef4444, #f97316);
+            top: 0.75rem;
+            right: 0.75rem;
+            background: transparent;
+            border: none;
+            color: #8e8e8e;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            line-height: 1;
+            transition: color 0.15s ease;
         }
         
-        .main-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            border-color: #ef4444;
+        .ad-close:hover {
+            color: #f5f5f5;
+        }
+        
+        .ad-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #eb1000;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ad-content {
+            font-size: 0.875rem;
+            color: #d1d1d1;
+            line-height: 1.5;
+            margin-bottom: 0.875rem;
+        }
+        
+        .ad-cta {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #eb1000;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            transition: all 0.15s ease;
+        }
+        
+        .ad-cta:hover {
+            background: #d10d00;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-action {
+            font-size: 0.875rem;
+            color: #4b9cf5;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+        
+        .section-action:hover {
+            color: #378ef0;
+        }
+        
+        /* News Items - Spectrum Card Style */
+        .news-items {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .news-item {
+            background: #2c2c2c;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.15s ease;
+        }
+        
+        .news-item:hover {
+            border-color: #4b4b4b;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+        
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 0.875rem;
+        }
+        
+        .news-date {
+            font-size: 0.8125rem;
+            color: #b3b3b3;
+            font-weight: 500;
+        }
+        
+        .news-badge {
+            display: inline-block;
+            padding: 0.25rem 0.625rem;
+            background: #323232;
+            border: 1px solid #3e3e3e;
+            border-radius: 12px;
+            font-size: 0.6875rem;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        .news-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+        
+        .news-title a:hover {
+            color: #4b9cf5;
+        }
+        
+        /* Grid Cards */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .grid-card {
+            background: #2c2c2c;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.15s ease;
+        }
+        
+        .grid-card:hover {
+            border-color: #4b4b4b;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         
         .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #3e3e3e;
         }
         
         .card-stats {
@@ -151,228 +426,147 @@
         .mini-stat {
             text-align: center;
             padding: 1rem;
-            background: #0f0f0f;
-            border-radius: 8px;
+            background: #323232;
+            border: 1px solid #3e3e3e;
+            border-radius: 6px;
         }
         
         .mini-stat-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ef4444;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #eb1000;
             margin-bottom: 0.25rem;
         }
         
         .mini-stat-label {
-            color: #94a3b8;
+            color: #b3b3b3;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            font-weight: 500;
         }
         
-        .product-list {
+        .item-list {
             display: grid;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
         
-        .product-item {
+        .item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.875rem;
-            background: #0f0f0f;
-            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            background: #323232;
+            border: 1px solid #3e3e3e;
+            border-radius: 6px;
             font-size: 0.875rem;
+            transition: all 0.15s ease;
         }
         
-        .product-item-name {
-            color: #e2e8f0;
+        .item:hover {
+            background: #383838;
+            border-color: #4b4b4b;
+        }
+        
+        .item-name {
+            color: #f5f5f5;
             font-weight: 500;
         }
         
-        .product-item-link {
-            color: #f97316;
+        .item-link {
+            color: #4b9cf5;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.8125rem;
             font-weight: 500;
+            transition: color 0.15s ease;
         }
         
-        .product-item-link:hover {
-            color: #ef4444;
+        .item-link:hover {
+            color: #378ef0;
         }
         
-        .source-list {
-            display: grid;
-            gap: 0.75rem;
-        }
-        
-        .source-item {
-            padding: 1rem;
-            background: #0f0f0f;
-            border-radius: 8px;
-        }
-        
-        .source-name {
-            color: #e2e8f0;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.35rem;
-        }
-        
-        .source-desc {
-            color: #64748b;
-            font-size: 0.8rem;
+        .item-desc {
+            color: #b3b3b3;
+            font-size: 0.8125rem;
             margin-bottom: 0.5rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
         
-        .source-link {
-            color: #f97316;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .source-link:hover {
-            color: #ef4444;
-        }
-        
-        .card-action {
-            display: block;
-            text-align: center;
-            padding: 0.75rem;
-            background: #0f0f0f;
-            border-radius: 8px;
-            color: #e2e8f0;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border: 1px solid #2a2a2a;
-        }
-        
-        .card-action:hover {
-            background: #2a2a2a;
-            border-color: #ef4444;
-            color: #f97316;
-        }
-        
-        .links {
-            margin-top: 2.5rem;
+        /* Spectrum Buttons */
+        .action-group {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             justify-content: center;
             flex-wrap: wrap;
+            margin: 2.5rem 0;
         }
         
-        .btn {
+        .spectrum-btn {
             display: inline-flex;
             align-items: center;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, #ef4444, #f97316);
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            background: #1473e6;
             color: white;
             text-decoration: none;
-            border-radius: 12px;
+            border-radius: 4px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(239,68,68,0.4);
-            position: relative;
-            overflow: hidden;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
         }
         
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+        .spectrum-btn:hover {
+            background: #0d66d0;
         }
         
-        .btn:hover::before {
-            left: 100%;
+        .spectrum-btn-secondary {
+            background: transparent;
+            color: #d1d1d1;
+            border-color: #6e6e6e;
         }
         
-        .btn:hover {
-            background: linear-gradient(135deg, #dc2626, #ea580c);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(239,68,68,0.5);
+        .spectrum-btn-secondary:hover {
+            background: #3e3e3e;
+            border-color: #8e8e8e;
+            color: #fff;
         }
         
-        .btn-secondary {
-            background: #1a1a1a;
-            color: #e2e8f0;
-            border: 2px solid #2a2a2a;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        .spectrum-btn-accent {
+            background: #eb1000;
         }
         
-        .btn-secondary:hover {
-            background: #2a2a2a;
-            border-color: #3a3a3a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        .spectrum-btn-accent:hover {
+            background: #d10d00;
         }
         
-        .footer {
-            margin-top: 3rem;
-            padding-top: 2.5rem;
-            border-top: 1px solid #2a2a2a;
-            color: #94a3b8;
-            font-size: 0.9rem;
+        /* Footer - Spectrum Style */
+        .spectrum-footer {
+            border-top: 1px solid #3e3e3e;
+            margin-top: 4rem;
+            padding-top: 2rem;
         }
         
-        .footer-content {
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            line-height: 1.7;
-        }
-        
-        .footer-content p {
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            font-size: 0.85rem;
-            color: #64748b;
-        }
-        
-        .footer-links a {
-            color: #ef4444;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-        
-        .footer-links a:hover {
-            color: #f97316;
-        }
-        
-        .subscribe-section {
-            background: #141414;
+        .subscribe-card {
+            background: #2c2c2c;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
             padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
         
         .subscribe-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ef4444;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
             margin-bottom: 0.5rem;
             text-align: center;
         }
         
         .subscribe-desc {
-            color: #94a3b8;
+            color: #b3b3b3;
             margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+            font-size: 0.9375rem;
             text-align: center;
         }
         
@@ -381,786 +575,507 @@
             gap: 0.75rem;
             flex-wrap: wrap;
             justify-content: center;
+            margin-bottom: 1.5rem;
         }
         
         .subscribe-input {
             flex: 1;
             min-width: 250px;
-            padding: 0.875rem 1rem;
-            background: #0f0f0f;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            color: #e2e8f0;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            max-width: 400px;
+            padding: 0.625rem 1rem;
+            background: #323232;
+            border: 1px solid #3e3e3e;
+            border-radius: 4px;
+            color: #f5f5f5;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
         }
         
         .subscribe-input:focus {
             outline: none;
-            border-color: #ef4444;
+            border-color: #1473e6;
+            box-shadow: 0 0 0 1px #1473e6;
         }
         
-        .subscribe-button {
-            padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, #ef4444, #f97316);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
-        }
-        
-        .subscribe-button:hover {
-            background: linear-gradient(135deg, #dc2626, #ea580c);
-            transform: translateY(-2px);
-        }
-        
-        .products-section {
-            margin: 3rem 0;
-        }
-        
-        .section-header {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #ef4444;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .product-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .product-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .product-card {
-            background: #141414;
-            padding: 1.75rem;
-            border-radius: 12px;
-            border: 1px solid #2a2a2a;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-        
-        .product-card:hover {
-            border-color: #ef4444;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-        
-        .product-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 0.75rem;
-        }
-        
-        .product-meta {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-        
-        .product-links {
+        .subscribe-features {
             display: flex;
-            gap: 0.75rem;
+            gap: 1.5rem;
+            justify-content: center;
             flex-wrap: wrap;
+            font-size: 0.8125rem;
+            color: #b3b3b3;
+            margin-bottom: 1.5rem;
         }
         
-        .product-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.5rem 1rem;
-            background: #1a1a1a;
-            color: #e2e8f0;
+        .subscribe-features span::before {
+            content: '✓';
+            color: #2d9d78;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .footer-social {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #3e3e3e;
+        }
+        
+        .social-title {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-link {
+            color: #b3b3b3;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            border: 1px solid #2a2a2a;
-            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            transition: color 0.15s ease;
         }
         
-        .product-link:hover {
-            background: #2a2a2a;
-            border-color: #ef4444;
-            color: #f97316;
+        .social-link:hover {
+            color: #4b9cf5;
         }
         
-        .content-wrapper h2 {
-            color: #ef4444;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 1.5rem 0 1rem 0;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #2a2a2a;
+        .footer-disclaimer {
+            text-align: center;
+            color: #8e8e8e;
+            font-size: 0.8125rem;
+            margin-top: 1rem;
         }
         
-        .content-wrapper h3 {
-            color: #f97316;
-            font-size: 1rem;
+        /* Content formatting */
+        .content-wrapper {
+            color: #d1d1d1;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        
+        .content-wrapper p {
+            margin: 0.75rem 0;
+        }
+        
+        .content-wrapper strong {
+            color: #f5f5f5;
             font-weight: 600;
-            margin: 1.25rem 0 0.75rem 0;
         }
         
         .content-wrapper ul {
             list-style: none;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.875rem;
-            margin: 1rem 0;
+            padding: 0;
         }
         
         .content-wrapper ul li {
-            display: block;
-            padding: 0;
-            background: transparent;
-            border-radius: 0;
-            width: auto;
+            padding: 0.5rem 0;
         }
         
-        .content-wrapper ul li a {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.125rem 1.5rem;
-            background: linear-gradient(135deg, #1a1a1a, #1f1f1f);
-            border: 1px solid #2a2a2a;
-            border-left: 4px solid #f97316;
-            border-radius: 10px;
-            color: #fb923c;
+        .content-wrapper a {
+            color: #4b9cf5;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            word-break: normal;
-            white-space: nowrap;
+            transition: color 0.15s ease;
         }
         
-        .content-wrapper ul li a::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(249,115,22,0.1), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .content-wrapper ul li a:hover::after {
-            left: 100%;
-        }
-        
-        .content-wrapper ul li a:hover {
-            background: linear-gradient(135deg, #1f1f1f, #252525);
-            border-left-color: #ef4444;
-            border-left-width: 5px;
-            color: #fbbf24;
-            transform: translateX(6px);
-            box-shadow: 0 6px 16px rgba(249,115,22,0.25);
-        }
-        
-        .content-wrapper ul li a::before {
-            content: '\u2192';
-            font-weight: bold;
-            font-size: 1.25rem;
-            color: #f97316;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
-        
-        .content-wrapper ul li a:hover::before {
-            transform: translateX(4px);
-            color: #ef4444;
-        }        .content-wrapper p {
-            margin: 1rem 0;
-            line-height: 1.8;
-            color: #cbd5e1;
-        }
-        
-        .content-wrapper p strong {
-            color: #94a3b8;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-        
-        .content-wrapper p strong::after {
-            content: '';
-            margin-right: 0.5rem;
+        .content-wrapper a:hover {
+            color: #378ef0;
+            text-decoration: underline;
         }
         
         .content-wrapper hr {
             border: none;
-            border-top: 2px solid #2a2a2a;
-            margin: 2rem 0;
+            border-top: 1px solid #3e3e3e;
+            margin: 1.5rem 0;
         }
         
-        .content-wrapper a {
-            color: #f97316;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-        
-        .content-wrapper a:hover {
-            color: #ef4444;
-        }
-        
-        .content-wrapper > p:last-child a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(249,115,22,0.1));
-            border: 2px solid transparent;
-            border-image: linear-gradient(135deg, #ef4444, #f97316) 1;
-            border-radius: 10px;
-            color: #f97316 !important;
-            font-weight: 600;
-            box-shadow: 0 0 20px rgba(239,68,68,0.3), 0 4px 12px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .content-wrapper > p:last-child a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .content-wrapper > p:last-child a:hover::before {
-            left: 100%;
-        }
-        
-        .content-wrapper > p:last-child a:hover {
-            background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(249,115,22,0.2));
-            color: #ef4444 !important;
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(239,68,68,0.5), 0 8px 20px rgba(239,68,68,0.3);
-        }
-        
+        /* Responsive */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem 0;
-            }
-            
-            .container {
-                margin: 0 1rem;
-                padding: 1.5rem;
-                border-radius: 16px;
-            }
-            
-            .logo {
-                font-size: 2rem;
-                gap: 0.75rem;
-            }
-            
-            .logo svg {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .tagline {
-                font-size: 0.85rem !important;
-                margin-bottom: 2rem !important;
-            }
-            
-            /* Fix news items layout on mobile */
-            .news-item {
-                padding: 1rem !important;
-            }
-            
-            .news-item > div {
-                flex-direction: column !important;
-                gap: 0.75rem !important;
-            }
-            
-            .news-date {
-                width: auto !important;
-                font-size: 0.8rem !important;
-                padding-bottom: 0.5rem;
-                border-bottom: 1px solid #2a2a2a;
-            }
-            
-            .news-title {
-                font-size: 0.95rem !important;
-            }
-            
-            .news-source {
-                font-size: 0.7rem !important;
-            }
-            
-            .content-wrapper {
-                font-size: 0.9rem;
-            }
-            
-            /* Drastically simplify bulletin content on mobile */
-            .news-item .content-wrapper h2,
-            .news-item .content-wrapper h3,
-            .news-item .content-wrapper ul,
-            .news-item .content-wrapper p:not(:last-child) {
-                display: none !important;
-            }
-            
-            .news-item .content-wrapper hr {
-                margin: 0.75rem 0 !important;
-            }
-            
-            .news-item .content-wrapper p:last-child {
-                margin: 0 !important;
-            }
-            
-            .news-item .content-wrapper a {
-                font-size: 0.85rem;
-                display: inline-block;
-                padding: 0.5rem 0;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .stat-card {
-                padding: 1.5rem;
-            }
-            
-            .stat-number {
-                font-size: 2rem;
-            }
-            
-            .main-cards {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-            
-            .main-card {
-                padding: 1.5rem;
-            }
-            
-            .card-title {
-                font-size: 1rem;
-            }
-            
-            .source-item {
-                padding: 0.875rem;
-            }
-            
-            .source-item > div {
-                flex-direction: column !important;
-                gap: 0.5rem !important;
-            }
-            
-            .source-item > div > div:last-child {
-                align-self: flex-start;
-            }
-            
-            .source-name {
-                font-size: 0.85rem;
-            }
-            
-            .source-desc {
-                font-size: 0.75rem;
-            }
-            
-            .links {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.75rem;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-                padding: 0.875rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .subscribe-section {
-                padding: 1.25rem 1.5rem !important;
-            }
-            
-            .subscribe-section h3 {
-                font-size: 1rem !important;
-            }
-            
-            .subscribe-section p {
-                font-size: 0.8rem !important;
-            }
-            
-            .subscribe-form {
-                flex-direction: column;
-            }
-            
-            .subscribe-input {
-                min-width: 100% !important;
-                font-size: 0.9rem !important;
-            }
-            
-            .subscribe-button {
-                width: 100%;
-                font-size: 0.9rem !important;
-            }
-            
-            .subscribe-section > div:last-child {
-                font-size: 0.75rem !important;
-                gap: 1rem !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                margin: 0 0.5rem;
+            .spectrum-header-container {
                 padding: 1rem;
             }
             
-            .logo {
-                font-size: 1.75rem;
+            .spectrum-nav {
+                display: none;
+            }
+            
+            .container {
+                padding: 0 1rem 2rem 1rem;
+            }
+            
+            .hero-section {
+                padding: 2rem 0 2rem 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            /* Stack sidebar on mobile */
+            .content-with-sidebar {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .sidebar {
+                order: -1; /* Move sidebar above content on mobile */
+            }
+            
+            .grid-cards {
+                grid-template-columns: 1fr;
             }
             
             .news-item {
-                padding: 0.875rem !important;
+                padding: 1rem;
             }
             
-            .main-card {
-                padding: 1.25rem;
+            .subscribe-card {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Spectrum Header -->
+    <header class="spectrum-header">
+        <div class="spectrum-header-container">
+            <a href="/" class="spectrum-logo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624Z"/>
+                </svg>
+                <span class="spectrum-logo-text">Adobe Digest</span>
+            </a>
+            <nav class="spectrum-nav">
+                <a href="/archive/" class="spectrum-nav-link">Archive</a>
+                <a href="/bulletins/feed.xml" class="spectrum-nav-link">RSS</a>
+                <a href="https://github.com/doughatcher/adobe-digest" class="spectrum-nav-link" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
     <div class="container">
-        <div class="logo">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624Z"/>
-            </svg>
-            Adobe Digest
-        </div>
-        <div class="tagline" style="font-size: 0.95rem; color: #64748b; margin-bottom: 2.5rem; font-weight: 400; max-width: 600px; margin-left: auto; margin-right: auto;">Automated security intelligence for Adobe Commerce and Experience Manager</div>
-        
-        <!-- Latest Updates without header -->
-        <div style="margin: 2rem 0 3rem 0; text-align: left;">
-            <div class="news-items" style="display:grid; gap:1.5rem;">
-                {{ $recentPosts := first 5 .Site.RegularPages.ByDate.Reverse }}
-                {{ range $recentPosts }}
-                <div class="news-item" style="background:#1f1f1f; padding:2rem; border-radius:16px; border:1px solid #2a2a2a; transition:all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                    <div style="display:flex; gap:1rem; align-items:flex-start;">
-                        <div class="news-date" style="flex-shrink:0; color:#94a3b8; font-size:0.875rem; width:90px; font-weight:500;">{{ .Date.Format "Jan 2, 2006" }}</div>
-                        <div class="news-content" style="flex-grow:1;">
-                            <div class="news-title" style="color:#f1f5f9; font-weight:700; margin-bottom:0.75rem; font-size:1.15rem; line-height:1.4;">
-                                <a href="{{ .RelPermalink }}" style="color:#f1f5f9; text-decoration:none; transition:color 0.2s ease;">{{ .Title }}</a>
-                            </div>
-                            <div class="news-source" style="color:#94a3b8; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1rem; font-weight:600;">
-                                {{ if findRE "APSB\\d{2}-\\d{2}" .Title }}Security Bulletin{{ else }}Security Research{{ end }}
-                            </div>
-                            <div class="content-wrapper">
-                                {{ .Content }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{ end }}
-            </div>
-        </div>
-        
-        <div class="main-cards" style="grid-template-columns: repeat(2, 1fr);">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Security Intelligence for Adobe</h1>
+            <p class="hero-subtitle">Automated monitoring and analysis of security bulletins, CVEs, and research for Adobe Commerce and Experience Manager</p>
             {{ $allPages := .Site.RegularPages }}
             {{ $allBulletins := where $allPages "Type" "in" (slice "post" "posts") }}
             {{ if eq (len $allBulletins) 0 }}
                 {{ $allBulletins = where $allPages ".Title" "!=" "" }}
                 {{ $allBulletins = where $allBulletins ".Title" "match" "APSB" }}
             {{ end }}
-            <!-- Card 1: Monitored Products -->
-            <div class="main-card">
-                <div class="card-title">Monitored Products</div>
-                <div class="card-stats">
-                    <div class="mini-stat">
-                        <div class="mini-stat-number">{{ len $allBulletins }}</div>
-                        <div class="mini-stat-label">Bulletins</div>
+            <div class="stat-badges">
+                <div class="stat-badge">
+                    <span class="stat-badge-number">{{ len $allBulletins }}</span>
+                    <span>Security Bulletins Tracked</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-badge-number">3</span>
+                    <span>Products Monitored</span>
+                </div>
+                <div class="stat-badge">
+                    <span>Updated {{ with $allBulletins.ByDate.Reverse }}{{ (index . 0).Date.Format "Jan 2, 2006" }}{{ end }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest Updates with Sidebar -->
+        <div class="content-with-sidebar">
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section" style="margin-top: 0;">
+                    <div class="section-header">
+                        <h2 class="section-title">Latest Security Updates</h2>
+                        <a href="/archive/" class="section-action">View All →</a>
                     </div>
-                    <div class="mini-stat">
-                        <div class="mini-stat-number">{{ with $allBulletins.ByDate.Reverse }}{{ (index . 0).Date.Format "Jan 2" }}{{ end }}</div>
-                        <div class="mini-stat-label">Updated</div>
+                    <div class="news-items">
+                        {{ $recentPosts := first 5 .Site.RegularPages.ByDate.Reverse }}
+                        {{ range $recentPosts }}
+                        <article class="news-item">
+                            <div class="news-meta">
+                                <time class="news-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                                <span class="news-badge">{{ if findRE "APSB\\d{2}-\\d{2}" .Title }}Security Bulletin{{ else }}Security Research{{ end }}</span>
+                            </div>
+                            <h3 class="news-title">
+                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                            </h3>
+                            <div class="content-wrapper">
+                                {{ .Content | truncate 300 }}
+                            </div>
+                        </article>
+                        {{ end }}
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Ad Callout -->
+                <div class="ad-callout" id="adCallout">
+                    <button class="ad-close" onclick="document.getElementById('adCallout').classList.add('hidden'); localStorage.setItem('hideAd', 'true');" aria-label="Close">&times;</button>
+                    <div class="ad-title">Sponsored</div>
+                    <div class="ad-content">
+                        <strong style="font-size: 0.9375rem;">Need Adobe Commerce Security Consulting?</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.8125rem; line-height: 1.4;">Expert security audits, patch management, and compliance support.</p>
+                    </div>
+                    <a href="#" class="ad-cta">Learn More →</a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-card-title">Quick Stats</h3>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Total Bulletins</span>
+                        <span class="sidebar-stat-value accent">{{ len $allBulletins }}</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Last Update</span>
+                        <span class="sidebar-stat-value">{{ with $allBulletins.ByDate.Reverse }}{{ (index . 0).Date.Format "Jan 2" }}{{ end }}</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Check Interval</span>
+                        <span class="sidebar-stat-value">6 hours</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Products</span>
+                        <span class="sidebar-stat-value">3</span>
                     </div>
                 </div>
-                {{ $allPosts := .Site.RegularPages }}
-                {{ $commercePosts := slice }}
-                {{ $aemPosts := slice }}
-                {{ $formsPosts := slice }}
-                {{ range $allPosts }}
-                    {{ if or (in .Title "Adobe Commerce") (in .RelPermalink "commerce") (in .Title "Magento") }}
-                        {{ $commercePosts = $commercePosts | append . }}
-                    {{ end }}
-                    {{ if or (in .Title "Experience Manager") (in .RelPermalink "experience-manager") }}
-                        {{ $aemPosts = $aemPosts | append . }}
-                    {{ end }}
-                    {{ if or (in .Title "AEM Forms") (in .RelPermalink "aem-forms") }}
-                        {{ $formsPosts = $formsPosts | append . }}
-                    {{ end }}
-                {{ end }}
-                <div class="product-list">
-                    <div class="product-item">
-                        <span class="product-item-name">Adobe Commerce</span>
-                        <a href="/categories/adobe-commerce/" class="product-item-link">View →</a>
+
+                <!-- Recent Activity -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-card-title">Recent Activity</h3>
+                    {{ $recentActivity := first 6 .Site.RegularPages.ByDate.Reverse }}
+                    {{ range $recentActivity }}
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label" style="font-size: 0.8125rem; max-width: 60%;">{{ .Title | truncate 30 }}</span>
+                        <span class="sidebar-stat-value" style="font-size: 0.75rem; font-weight: 500; color: #b3b3b3;">{{ .Date.Format "Jan 2" }}</span>
                     </div>
-                    <div class="product-item">
-                        <span class="product-item-name">Experience Manager</span>
-                        <a href="/categories/adobe-experience-manager/" class="product-item-link">View →</a>
+                    {{ end }}
+                </div>
+
+                <!-- Resources -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-card-title">Resources</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <a href="https://helpx.adobe.com/security.html" target="_blank" rel="noopener" class="item-link" style="font-size: 0.875rem;">Adobe Security Center →</a>
+                        <a href="https://nvd.nist.gov/" target="_blank" rel="noopener" class="item-link" style="font-size: 0.875rem;">NIST NVD Database →</a>
+                        <a href="/bulletins/feed.xml" class="item-link" style="font-size: 0.875rem;">RSS Feed →</a>
+                        <a href="https://github.com/doughatcher/adobe-digest" target="_blank" rel="noopener" class="item-link" style="font-size: 0.875rem;">GitHub Repository →</a>
                     </div>
-                    <div class="product-item">
-                        <span class="product-item-name">AEM Forms</span>
-                        <a href="/categories/adobe-aem-forms/" class="product-item-link">View →</a>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Grid Cards -->
+        <section class="section">
+            <div class="grid-cards">
+                <!-- Monitored Products -->
+                <div class="grid-card">
+                    <h3 class="card-title">Monitored Products</h3>
+                    <div class="card-stats">
+                        <div class="mini-stat">
+                            <div class="mini-stat-number">{{ len $allBulletins }}</div>
+                            <div class="mini-stat-label">Bulletins</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-number">{{ with $allBulletins.ByDate.Reverse }}{{ (index . 0).Date.Format "Jan 2" }}{{ end }}</div>
+                            <div class="mini-stat-label">Updated</div>
+                        </div>
+                    </div>
+                    <div class="item-list">
+                        <div class="item">
+                            <span class="item-name">Adobe Commerce</span>
+                            <a href="/categories/adobe-commerce/" class="item-link">View →</a>
+                        </div>
+                        <div class="item">
+                            <span class="item-name">Experience Manager</span>
+                            <a href="/categories/adobe-experience-manager/" class="item-link">View →</a>
+                        </div>
+                        <div class="item">
+                            <span class="item-name">AEM Forms</span>
+                            <a href="/categories/adobe-aem-forms/" class="item-link">View →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Sources -->
+                <div class="grid-card">
+                    <h3 class="card-title">Data Sources</h3>
+                    <div class="item-list">
+                        <div class="item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <span class="item-name">Adobe Security</span>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="https://helpx.adobe.com/security/security-bulletin.html" target="_blank" rel="noopener" class="item-link">Web</a>
+                                    <a href="/bulletins/feed.xml" class="item-link">RSS</a>
+                                </div>
+                            </div>
+                            <span class="item-desc">Official security bulletins (3 products)</span>
+                        </div>
+                        <div class="item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <span class="item-name">Adobe Commerce Releases</span>
+                                <a href="https://experienceleague.adobe.com/en/docs/commerce-operations/release/versions" target="_blank" rel="noopener" class="item-link">Web</a>
+                            </div>
+                            <span class="item-desc">Official release notes</span>
+                        </div>
+                        <div class="item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <span class="item-name">Sansec Research</span>
+                                <a href="https://sansec.io/atom.xml" target="_blank" rel="noopener" class="item-link">RSS</a>
+                            </div>
+                            <span class="item-desc">Security research articles</span>
+                        </div>
+                        <div class="item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <span class="item-name">Akamai Blog</span>
+                                <a href="https://feeds.feedburner.com/akamai/blog" target="_blank" rel="noopener" class="item-link">RSS</a>
+                            </div>
+                            <span class="item-desc">Filtered for Adobe topics</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: #323232; border: 1px solid #3e3e3e; border-radius: 6px; text-align: center;">
+                        <div style="color: #b3b3b3; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Updates Every</div>
+                        <div style="color: #eb1000; font-weight: 700; font-size: 0.875rem; margin-top: 0.25rem;">6 Hours</div>
                     </div>
                 </div>
             </div>
-            <!-- Card 2: Data Sources -->
-            <div class="main-card">
-                <div class="card-title">Data Sources</div>
-                <div class="source-list">
-                    <!-- Adobe HelpX consolidated -->
-                    <div class="source-item">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                            <div>
-                                <div class="source-name">Adobe Security</div>
-                                <div class="source-desc">Official security bulletins (3 products)</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                                <a href="https://helpx.adobe.com/security/security-bulletin.html" target="_blank" rel="noopener" class="source-link">Web</a>
-                                <a href="/bulletins/feed.xml" class="source-link">RSS</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Adobe Commerce Releases -->
-                    <div class="source-item">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                            <div>
-                                <div class="source-name">Adobe Commerce Releases</div>
-                                <div class="source-desc">Official release notes for all versions</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                                <a href="https://experienceleague.adobe.com/en/docs/commerce-operations/release/versions" target="_blank" rel="noopener" class="source-link">Web</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Sansec Research -->
-                    <div class="source-item">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                            <div>
-                                <div class="source-name">Sansec.io Security Research</div>
-                                <div class="source-desc">Security research articles</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                                <a href="https://sansec.io/atom.xml" target="_blank" rel="noopener" class="source-link">RSS</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Akamai Blog -->
-                    <div class="source-item">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                            <div>
-                                <div class="source-name">Akamai Blog</div>
-                                <div class="source-desc">Filtered for Adobe Commerce and AEM topics</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                                <a href="https://feeds.feedburner.com/akamai/blog" target="_blank" rel="noopener" class="source-link">RSS</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top: 1rem; padding: 0.75rem; background: #0f0f0f; border-radius: 8px; text-align: center;">
-                    <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Updates Every</div>
-                    <div style="color: #f97316; font-weight: 700; font-size: 0.875rem; margin-top: 0.25rem;">6 Hours</div>
-                </div>
-            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="action-group">
+            <a href="/archive/" class="spectrum-btn spectrum-btn-accent">Browse Full Archive</a>
+            <a href="/bulletins/feed.xml" class="spectrum-btn spectrum-btn-secondary">Subscribe via RSS</a>
+            <a href="https://github.com/doughatcher/adobe-digest" class="spectrum-btn spectrum-btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
         </div>
-        
-        <div class="links">
-            <a href="/archive/" class="btn">Browse Archive</a>
-            <a href="/bulletins/feed.xml" class="btn btn-secondary">RSS Feed</a>
-            <a href="https://github.com/doughatcher/adobe-digest" class="btn btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
-        </div>
-        
-        <div class="footer" style="margin-top:3rem; padding-top:2rem; border-top:1px solid #2a2a2a;">
-            <div class="subscribe-section" style="background:#141414; padding:1.5rem 2rem; border-radius:12px; border:1px solid #2a2a2a; margin-bottom:1.5rem;">
-                <h3 style="font-size:1.1rem; color:#ef4444; margin-bottom:0.25rem; text-align:center;">Stay Ahead of Security Threats</h3>
-                <p style="text-align:center; color:#94a3b8; font-size:0.875rem; margin-bottom:1rem;">Get bulletins and research updates delivered to your inbox</p>
-                <form method="POST" action="https://micro.blog/users/subscribe/267908" style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center; margin-bottom:0.75rem;">
-                    <input type="text" name="email" size="30" placeholder="Your email address" style="flex:1; min-width:250px; padding:0.7rem 1rem; background:#0f0f0f; border:1px solid #2a2a2a; border-radius:8px; color:#e2e8f0; font-size:0.95rem;" />
-                    <input type="submit" value="Subscribe" style="padding:0.7rem 1.5rem; background:linear-gradient(135deg,#ef4444,#f97316); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:0.95rem;" />
+
+        <!-- Footer -->
+        <footer class="spectrum-footer">
+            <div class="subscribe-card">
+                <h3 class="subscribe-title">Stay Ahead of Security Threats</h3>
+                <p class="subscribe-desc">Get bulletins and research updates delivered to your inbox</p>
+                <form method="POST" action="https://micro.blog/users/subscribe/267908" class="subscribe-form">
+                    <input type="text" name="email" placeholder="Your email address" class="subscribe-input" required />
+                    <button type="submit" class="spectrum-btn">Subscribe</button>
                 </form>
-                <div style="display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; font-size:0.8rem; color:#64748b; margin-bottom:1rem;">
-                    <span>✓ Official security bulletins</span>
-                    <span>✓ Industry research</span>
-                    <span>✓ Zero spam</span>
+                <div class="subscribe-features">
+                    <span>Official security bulletins</span>
+                    <span>Industry research</span>
+                    <span>Zero spam</span>
                 </div>
-                
-                <!-- Browser Notifications Toggle -->
-                <div id="notificationSection" style="border-top:1px solid #2a2a2a; padding-top:1rem; margin-top:0.5rem; display:none;">
+
+                <!-- Browser Notifications -->
+                <div id="notificationSection" style="border-top:1px solid #3e3e3e; padding-top:1.5rem; margin-top:1rem; display:none;">
                     <div style="display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap;">
                         <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <label class="toggle-switch" style="position:relative; display:inline-block; width:44px; height:22px;">
+                            <label style="position:relative; display:inline-block; width:44px; height:24px;">
                                 <input type="checkbox" id="notificationToggle" onclick="handleNotificationToggle()" style="opacity:0; width:0; height:0;">
-                                <span class="toggle-slider" style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#2a2a2a; border-radius:22px; transition:0.3s;"></span>
+                                <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#3e3e3e; border-radius:24px; transition:0.3s;"></span>
+                                <span style="position:absolute; content:''; height:18px; width:18px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:0.3s;"></span>
                             </label>
-                            <span style="font-size:0.8rem; color:#94a3b8;">Browser notifications</span>
+                            <span style="font-size:0.875rem; color:#b3b3b3;">Browser notifications</span>
                         </div>
-                        <span id="notificationStatus" style="font-size:0.75rem; color:#64748b;"></span>
+                        <span id="notificationStatus" style="font-size:0.8125rem; color:#b3b3b3;"></span>
                     </div>
                 </div>
             </div>
-            
-            <style>
-                .toggle-switch input:checked + .toggle-slider {
-                    background: linear-gradient(135deg, #ef4444, #f97316);
-                }
-                .toggle-slider:before {
-                    content: "";
-                    position: absolute;
-                    height: 16px;
-                    width: 16px;
-                    left: 3px;
-                    bottom: 3px;
-                    background-color: white;
-                    border-radius: 50%;
-                    transition: 0.3s;
-                }
-                .toggle-switch input:checked + .toggle-slider:before {
-                    transform: translateX(22px);
-                }
-                .toggle-switch input:disabled + .toggle-slider {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                }
-            </style>
-            
-            <script>
-                // Initialize notification toggle state
-                document.addEventListener('DOMContentLoaded', function() {
-                    updateNotificationToggle();
-                });
 
-                async function handleNotificationToggle() {
-                    const toggle = document.getElementById('notificationToggle');
-                    const status = document.getElementById('notificationStatus');
-                    
-                    if (!window.adobeDigestNotifications) {
-                        status.textContent = 'Error loading';
-                        status.style.color = '#ef4444';
-                        toggle.checked = false;
-                        return;
-                    }
-                    
-                    const manager = window.adobeDigestNotifications;
-                    
-                    if (!manager.isSupported()) {
-                        status.textContent = 'Not supported';
-                        status.style.color = '#ef4444';
-                        toggle.disabled = true;
-                        toggle.checked = false;
-                        return;
-                    }
-                    
-                    if (toggle.checked) {
-                        // Enabling
-                        const granted = await manager.requestPermission();
-                        if (granted) {
-                            status.textContent = 'Enabled';
-                            status.style.color = '#10b981';
-                            manager.startPeriodicChecks();
-                        } else {
-                            status.textContent = 'Denied';
-                            status.style.color = '#ef4444';
-                            toggle.checked = false;
-                            toggle.disabled = true;
-                        }
-                    } else {
-                        // Disabling
-                        manager.disable();
-                        status.textContent = 'Disabled';
-                        status.style.color = '#64748b';
-                    }
-                }
-
-                function updateNotificationToggle() {
-                    const toggle = document.getElementById('notificationToggle');
-                    const status = document.getElementById('notificationStatus');
-                    const section = document.getElementById('notificationSection');
-                    
-                    if (!window.adobeDigestNotifications) {
-                        return;
-                    }
-                    
-                    const manager = window.adobeDigestNotifications;
-                    
-                    if (!manager.isSupported()) {
-                        // Hide the entire notification section if not supported
-                        section.style.display = 'none';
-                        return;
-                    }
-                    
-                    // Show the section since notifications are supported
-                    section.style.display = 'block';
-                    
-                    if (manager.enabled && manager.getPermission() === 'granted') {
-                        toggle.checked = true;
-                        status.textContent = 'Enabled';
-                        status.style.color = '#10b981';
-                    } else if (manager.getPermission() === 'denied') {
-                        status.textContent = 'Denied';
-                        status.style.color = '#ef4444';
-                        toggle.disabled = true;
-                        toggle.checked = false;
-                    } else {
-                        toggle.checked = false;
-                        status.textContent = 'Disabled';
-                        status.style.color = '#64748b';
-                    }
-                }
-            </script>
-            
-            <div style="text-align:center; color:#64748b; font-size:0.8rem;">
-            <div style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:1.5rem;">
-                <div style="margin-bottom:1rem;">
-                    <p style="margin-bottom:0.5rem; font-weight:500; color:#94a3b8;">Follow on Social</p>
-                    <div style="display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;">
-                        <a href="https://micro.blog/adobedigest" target="_blank" rel="noopener" style="color:#64748b; text-decoration:none; transition:color 0.2s;">
-                            <span style="color:#ef4444;">●</span> Micro.blog
-                        </a>
-                        <a href="https://mastodon.social/deck/@adobedigest" target="_blank" rel="noopener me" style="color:#64748b; text-decoration:none; transition:color 0.2s;">
-                            <span style="color:#ef4444;">●</span> Mastodon
-                        </a>
-                        <a href="https://bsky.app/profile/adobedigest.bsky.social" target="_blank" rel="noopener" style="color:#64748b; text-decoration:none; transition:color 0.2s;">
-                            <span style="color:#ef4444;">●</span> Bluesky
-                        </a>
-                    </div>
+            <div class="footer-social">
+                <div class="social-title">Follow on Social</div>
+                <div class="social-links">
+                    <a href="https://micro.blog/adobedigest" target="_blank" rel="noopener" class="social-link">Micro.blog</a>
+                    <a href="https://mastodon.social/deck/@adobedigest" target="_blank" rel="noopener me" class="social-link">Mastodon</a>
+                    <a href="https://bsky.app/profile/adobedigest.bsky.social" target="_blank" rel="noopener" class="social-link">Bluesky</a>
                 </div>
-                <p>Independent community resource, not affiliated with Adobe</p>
+                <div class="footer-disclaimer">Independent community resource, not affiliated with Adobe</div>
             </div>
-        </div>
+        </footer>
     </div>
+
+    <script>
+        // Check if ad was previously closed
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('hideAd') === 'true') {
+                const ad = document.getElementById('adCallout');
+                if (ad) ad.classList.add('hidden');
+            }
+            updateNotificationToggle();
+        });
+
+        async function handleNotificationToggle() {
+            const toggle = document.getElementById('notificationToggle');
+            const status = document.getElementById('notificationStatus');
+            
+            if (!window.adobeDigestNotifications) {
+                status.textContent = 'Error loading';
+                toggle.checked = false;
+                return;
+            }
+            
+            const manager = window.adobeDigestNotifications;
+            
+            if (!manager.isSupported()) {
+                status.textContent = 'Not supported';
+                toggle.disabled = true;
+                toggle.checked = false;
+                return;
+            }
+            
+            if (toggle.checked) {
+                const granted = await manager.requestPermission();
+                if (granted) {
+                    status.textContent = 'Enabled';
+                    manager.startPeriodicChecks();
+                } else {
+                    status.textContent = 'Denied';
+                    toggle.checked = false;
+                    toggle.disabled = true;
+                }
+            } else {
+                manager.disable();
+                status.textContent = 'Disabled';
+            }
+        }
+
+        function updateNotificationToggle() {
+            const toggle = document.getElementById('notificationToggle');
+            const status = document.getElementById('notificationStatus');
+            const section = document.getElementById('notificationSection');
+            
+            if (!window.adobeDigestNotifications) return;
+            
+            const manager = window.adobeDigestNotifications;
+            
+            if (!manager.isSupported()) {
+                section.style.display = 'none';
+                return;
+            }
+            
+            section.style.display = 'block';
+            
+            if (manager.enabled && manager.getPermission() === 'granted') {
+                toggle.checked = true;
+                status.textContent = 'Enabled';
+            } else if (manager.getPermission() === 'denied') {
+                status.textContent = 'Denied';
+                toggle.disabled = true;
+                toggle.checked = false;
+            } else {
+                toggle.checked = false;
+                status.textContent = 'Disabled';
+            }
+        }
+    </script>
 </body>
 </html>
