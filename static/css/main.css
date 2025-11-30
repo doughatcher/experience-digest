@@ -1717,8 +1717,8 @@ body {
 
 /* Spectrum Header */
 .spectrum-header {
-    background: #2c2c2c;
-    border-bottom: 1px solid #3e3e3e;
+    background: #252525;
+    border-bottom: 1px solid #404040;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -1739,19 +1739,20 @@ body {
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
+    opacity: 0.95;
 }
 
 .spectrum-logo svg {
     width: 32px;
     height: 32px;
-    fill: #eb1000;
+    fill: #ff4444;
 }
 
 .spectrum-logo-text {
     font-size: 1.25rem;
-    font-weight: 700;
-    color: #f5f5f5;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: #e8e8e8;
+    letter-spacing: -0.01em;
 }
 
 .spectrum-nav {
@@ -1840,8 +1841,9 @@ body {
 }
 
 .news-item:hover, .post-preview:hover {
-    border-color: #4b4b4b;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    border-color: #484848;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
 }
 
 .news-meta {
@@ -1971,7 +1973,7 @@ body {
 }
 
 .card-title a:hover {
-    color: #eb1000;
+    color: #ff4444;
 }
 
 /* Content card styling */
@@ -1979,7 +1981,7 @@ body {
 .card-summary h2 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #eb1000;
+    color: #ff4444;
     margin: 1rem 0 0.5rem 0;
 }
 
