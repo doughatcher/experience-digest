@@ -14,7 +14,8 @@
     </header>
 
     <div class="posts-list">
-        {{ range .Site.RegularPages.ByDate.Reverse }}
+        {{ range (where .Site.RegularPages "Section" "!=" "archive").ByDate.Reverse }}
+        {{ if not (in .RelPermalink "/photos/") }}
         <article class="news-item">
             <div class="news-meta">
                 <time class="news-date">{{ .Date.Format "January 2, 2006" }}</time>
@@ -29,12 +30,13 @@
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             </h2>
             
-            {{ with .Summary }}
+            {{ if .Summary }}
             <div class="content-wrapper">
-                {{ . }}
+                <p>{{ .Summary | truncate 280 }}</p>
             </div>
             {{ end }}
         </article>
+        {{ end }}
         {{ end }}
     </div>
 </div>

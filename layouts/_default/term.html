@@ -29,9 +29,9 @@
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             </h2>
             
-            {{ with .Summary }}
+            {{ if .Summary }}
             <div class="content-wrapper">
-                {{ . }}
+                <p>{{ .Summary | truncate 280 }}</p>
             </div>
             {{ end }}
         </article>
