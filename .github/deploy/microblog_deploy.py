@@ -131,7 +131,7 @@ class MicroblogDeployer:
             print(f"❌ Error triggering rebuild: {e}")
             return False
     
-    def poll_check_endpoint(self, timeout=180, check_interval=3):
+    def poll_check_endpoint(self, timeout=60, check_interval=5):
         """
         Poll the /posts/check endpoint which drives the build process.
         This endpoint must be called repeatedly for the build to progress.
@@ -192,15 +192,15 @@ class MicroblogDeployer:
                         else:
                             # Not publishing/processing
                             # If we've seen activity and now status is empty, we're likely done
-                            if seen_statuses and not publishing_status:
-                                # Wait a few more polls to confirm it's truly idle
-                                if poll_count > 5:
-                                    print(f"\n✅ Build completed ({poll_count} polls)")
+                            # Or if we've done enough polls without activity, consider it done
+                            if (seen_statuses and not publishing_status and poll_count > 3) or poll_count > 10:
+                                print(f"\n✅ Build completed ({poll_count} polls)")
+                                if seen_statuses:
                                     print(f"   Status progression: {' → '.join(seen_statuses)} → (complete)")
-                                    return True
+                                return True
                         
-                        # Show progress every 10 polls
-                        if poll_count % 10 == 0:
+                        # Show progress every 5 polls
+                        if poll_count % 5 == 0:
                             print(f"   [{poll_count} polls, {int(elapsed)}s elapsed...]")
                         
                     except ValueError as e:
@@ -270,7 +270,7 @@ def main():
     parser.add_argument('--monitor', action='store_true', help='Monitor build logs for completion')
     parser.add_argument('--all', action='store_true', help='Run all operations (reload + rebuild + monitor)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate session cookie')
-    parser.add_argument('--timeout', type=int, default=180, help='Log monitoring timeout in seconds (default: 180)')
+    parser.add_argument('--timeout', type=int, default=60, help='Log monitoring timeout in seconds (default: 60)')
     
     args = parser.parse_args()
     
