@@ -136,7 +136,8 @@ class MicroblogDeployer:
         Poll the /posts/check endpoint which drives the build process.
         This endpoint must be called repeatedly for the build to progress.
         """
-        print(f"📡 Polling build endpoint (timeout: {timeout}s, checking every {check_interval}s)...")
+        print(f"📡 Polling /posts/check to drive build process...")
+        print(f"   (Timeout: {timeout}s, interval: {check_interval}s)")
         
         check_url = 'https://micro.blog/posts/check'
         
@@ -153,15 +154,14 @@ class MicroblogDeployer:
         start_time = time.time()
         poll_count = 0
         last_status = None
-        seen_publishing = False
-        idle_count = 0
+        seen_statuses = []
         
         while True:
             elapsed = time.time() - start_time
             
             if elapsed > timeout:
-                print(f"⏱️  Timeout reached ({timeout}s) after {poll_count} polls")
-                print("   Build may still be in progress - check logs manually")
+                print(f"\n⏱️  Timeout reached ({timeout}s) after {poll_count} polls")
+                print("   Build may still be in progress - check https://micro.blog/account/logs")
                 return False
             
             poll_count += 1
@@ -177,41 +177,36 @@ class MicroblogDeployer:
                         # Extract status information
                         is_publishing = check_data.get('is_publishing', False)
                         is_processing = check_data.get('is_processing', False)
-                        publishing_progress = check_data.get('publishing_progress', 0)
                         publishing_status = check_data.get('publishing_status', '')
                         
-                        # Show every poll response
-                        print(f"   [Poll #{poll_count}] is_publishing={is_publishing}, is_processing={is_processing}, progress={publishing_progress}, status='{publishing_status}'")
+                        # Show status changes
+                        if publishing_status and publishing_status != last_status:
+                            print(f"   📝 {publishing_status}")
+                            last_status = publishing_status
+                            seen_statuses.append(publishing_status)
                         
-                        # Track if we've seen any publishing activity
+                        # Track publishing activity
                         if is_publishing or is_processing:
-                            seen_publishing = True
-                            idle_count = 0
-                            current_status = publishing_status if publishing_status else f"Publishing... {int(publishing_progress * 100)}%"
-                            if current_status != last_status:
-                                print(f"   📝 {current_status}")
-                                last_status = current_status
+                            # Still actively publishing/processing
+                            pass
                         else:
-                            # Not currently publishing or processing
-                            if publishing_status and publishing_status != last_status:
-                                print(f"   📝 {publishing_status}")
-                                last_status = publishing_status
-                            
-                            # If we've seen publishing activity before and now it's idle, we're done
-                            if seen_publishing:
-                                idle_count += 1
-                                if idle_count >= 3:  # Wait for 3 consecutive idle checks
-                                    print(f"✅ Build completed (idle after publishing, {poll_count} polls)")
+                            # Not publishing/processing
+                            # If we've seen activity and now status is empty, we're likely done
+                            if seen_statuses and not publishing_status:
+                                # Wait a few more polls to confirm it's truly idle
+                                if poll_count > 15:
+                                    print(f"\n✅ Build completed ({poll_count} polls)")
+                                    print(f"   Status progression: {' → '.join(seen_statuses)} → (complete)")
                                     return True
-                            elif poll_count > 20:
-                                # If we never saw publishing but polled many times, assume complete
-                                print(f"✅ Build completed (no publishing detected after {poll_count} polls)")
-                                return True
+                        
+                        # Show progress every 10 polls
+                        if poll_count % 10 == 0:
+                            print(f"   [{poll_count} polls, {int(elapsed)}s elapsed...]")
                         
                     except ValueError as e:
-                        print(f"   [Poll #{poll_count}] Non-JSON response: {check_response.text[:100]}")
+                        print(f"   [Poll #{poll_count}] Non-JSON response")
                 else:
-                    print(f"   [Poll #{poll_count}] Status: {check_response.status_code}")
+                    print(f"   [Poll #{poll_count}] HTTP {check_response.status_code}")
                 
                 # Wait before next poll
                 time.sleep(check_interval)
