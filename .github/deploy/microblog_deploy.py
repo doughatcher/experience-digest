@@ -131,7 +131,7 @@ class MicroblogDeployer:
             print(f"❌ Error triggering rebuild: {e}")
             return False
     
-    def poll_check_endpoint(self, timeout=300, check_interval=3):
+    def poll_check_endpoint(self, timeout=180, check_interval=3):
         """
         Poll the /posts/check endpoint which drives the build process.
         This endpoint must be called repeatedly for the build to progress.
@@ -194,7 +194,7 @@ class MicroblogDeployer:
                             # If we've seen activity and now status is empty, we're likely done
                             if seen_statuses and not publishing_status:
                                 # Wait a few more polls to confirm it's truly idle
-                                if poll_count > 15:
+                                if poll_count > 5:
                                     print(f"\n✅ Build completed ({poll_count} polls)")
                                     print(f"   Status progression: {' → '.join(seen_statuses)} → (complete)")
                                     return True
@@ -270,7 +270,7 @@ def main():
     parser.add_argument('--monitor', action='store_true', help='Monitor build logs for completion')
     parser.add_argument('--all', action='store_true', help='Run all operations (reload + rebuild + monitor)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate session cookie')
-    parser.add_argument('--timeout', type=int, default=300, help='Log monitoring timeout in seconds (default: 300)')
+    parser.add_argument('--timeout', type=int, default=180, help='Log monitoring timeout in seconds (default: 180)')
     
     args = parser.parse_args()
     
