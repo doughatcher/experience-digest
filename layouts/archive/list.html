@@ -10,17 +10,23 @@
         {{ $allPosts = where $allPosts "Section" "!=" "bulletins" }}
         {{ $allPosts = where $allPosts "Section" "!=" "archive" }}
         {{ $allPosts = where $allPosts "Section" "!=" "replies" }}
+        {{ $filtered := slice }}
+        {{ range $allPosts }}
+            {{ if not (in .RelPermalink "/photos/") }}
+                {{ $filtered = $filtered | append . }}
+            {{ end }}
+        {{ end }}
+        {{ $paginator := .Paginate ($filtered.ByDate.Reverse) 25 }}
         <div class="page-meta">
             <div class="meta-item">
                 <span class="meta-icon">📄</span>
-                <span>{{ len $allPosts }} posts</span>
+                <span>{{ len $filtered }} posts</span>
             </div>
         </div>
     </header>
 
     <div class="posts-list">
-        {{ range $allPosts.ByDate.Reverse }}
-        {{ if not (in .RelPermalink "/photos/") }}
+        {{ range $paginator.Pages }}
         <article class="news-item">
             <div class="news-meta">
                 <time class="news-date">{{ .Date.Format "January 2, 2006" }}</time>
@@ -42,7 +48,20 @@
             {{ end }}
         </article>
         {{ end }}
-        {{ end }}
     </div>
+
+    {{ if gt $paginator.TotalPages 1 }}
+    <nav class="pagination">
+        {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" class="pagination-prev">← Previous</a>
+        {{ end }}
+        
+        <span class="pagination-info">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+        
+        {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" class="pagination-next">Next →</a>
+        {{ end }}
+    </nav>
+    {{ end }}
 </div>
 {{ end }}

@@ -2509,6 +2509,7 @@ body {
 .pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
     margin-top: 2.5rem;
 }
@@ -2529,6 +2530,12 @@ body {
     background: #3e3e3e;
     border-color: #4b4b4b;
     color: #fff;
+}
+
+.pagination-info {
+    color: #b3b3b3;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 /* List header */
