@@ -78,24 +78,43 @@ class MicroblogDeployer:
         url = 'https://micro.blog/account/themes/reload'
         headers = {
             **self.base_headers,
+            'Accept': '*/*',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Dest': 'empty',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
             'Origin': 'https://micro.blog',
-            'Referer': f'https://micro.blog/account/themes/{self.theme_id}/info'
+            'Referer': f'https://micro.blog/account/themes/{self.theme_id}/info',
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'same-origin',
+            'X-Requested-With': 'XMLHttpRequest'
         }
         
         try:
-            # POST with empty body, allow redirects
-            response = requests.post(url, headers=headers, timeout=30, data='', allow_redirects=True)
+            # POST with empty body, DON'T follow redirects - let it return 302
+            response = requests.post(url, headers=headers, timeout=30, data='', allow_redirects=False)
             
-            # The endpoint redirects to templates?reloading=1 which returns 404, but it works
-            if response.status_code in [200, 302, 404]:
+            # Should get a 302 redirect
+            if response.status_code == 302:
+                redirect_url = response.headers.get('Location', '')
+                print(f"✅ Theme reload triggered (redirected to {redirect_url})")
+                
+                # Now follow the redirect manually to see the 404
+                if redirect_url:
+                    # Make it absolute if needed
+                    if redirect_url.startswith('/'):
+                        redirect_url = f'https://micro.blog{redirect_url}'
+                    
+                    # Follow the redirect
+                    redirect_response = requests.get(redirect_url, headers={**self.base_headers}, timeout=30, allow_redirects=False)
+                    if redirect_response.status_code == 404:
+                        print("   (Redirect endpoint returns 404 as expected - reload is working)")
+                    else:
+                        print(f"   (Redirect returned {redirect_response.status_code})")
+                
+                return True
+            elif response.status_code in [200, 404]:
                 print("✅ Theme reload from GitHub triggered successfully")
-                if response.status_code == 404:
-                    print("   (Endpoint returns 404 but reload is working)")
                 return True
             else:
                 print(f"⚠️  Theme reload returned unexpected status {response.status_code}")
