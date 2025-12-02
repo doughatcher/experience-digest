@@ -27,25 +27,25 @@ Micro.blog's web interface polls the `/posts/check` endpoint to monitor build pr
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1. POST /account/signin (multipart form-data)              │
+│ 1. POST /account/signin (multipart form-data)               │
 │    - Triggers sign-in email                                 │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 2. Poll Gmail IMAP for sign-in email                       │
-│    - Search: FROM "help@micro.blog" SUBJECT "sign-in"      │
-│    - Extract magic link from quoted-printable HTML         │
+│ 2. Poll Gmail IMAP for sign-in email                        │
+│    - Search: FROM "help@micro.blog" SUBJECT "sign-in"       │
+│    - Extract magic link from quoted-printable HTML          │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
 │ 3. Follow magic link                                        │
-│    - Capture rack.session cookie                           │
-│    - Save to .session-cookie file                          │
+│    - Capture rack.session cookie                            │
+│    - Save to .session-cookie file                           │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. Switch to default blog (if multi-blog setup)            │
-│    - POST /account/sites/make_default                      │
+│ 4. Switch to default blog (if multi-blog setup)             │
+│    - POST /account/sites/make_default                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -54,26 +54,26 @@ Micro.blog's web interface polls the `/posts/check` endpoint to monitor build pr
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. Validate session cookie                                  │
-│    - GET /account/logs (check for redirect to /signin)     │
+│    - GET /account/logs (check for redirect to /signin)      │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 2. Reload theme templates from GitHub                      │
-│    - POST /account/themes/reload (with theme_id)           │
-│    - Returns 302 → /account/themes/{id}/templates?reload=1│
-│    - Redirected endpoint returns 404 (expected)            │
+│ 2. Reload theme templates from GitHub                       │
+│    - POST /account/themes/reload (with theme_id)            │
+│    - Returns 302 → /account/themes/{id}/templates?reload=1  │
+│    - Redirected endpoint returns 404 (expected)             │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
 │ 3. Trigger site rebuild                                     │
-│    - GET /account/logs (initiates rebuild)                 │
+│    - GET /account/logs (initiates rebuild)                  │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. Poll /posts/check repeatedly (with redirect following)  │
-│    - Monitors publishing_status changes                    │
-│    - Completes when status goes idle after activity        │
-│    - Typical completion: 15-50 seconds (5-10 polls)        │
+│ 4. Poll /posts/check repeatedly (with redirect following)   │
+│    - Monitors publishing_status changes                     │
+│    - Completes when status goes idle after activity         │
+│    - Typical completion: 15-50 seconds (5-10 polls)         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
