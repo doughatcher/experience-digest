@@ -74,28 +74,31 @@ class MicroblogDeployer:
         """Reload theme templates from GitHub"""
         print(f"🎨 Reloading theme from GitHub (ID: {self.theme_id})...")
         
-        url = f'https://micro.blog/account/themes/{self.theme_id}/templates?reloading=1'
+        # POST to /account/themes/reload (which redirects to templates?reloading=1)
+        url = 'https://micro.blog/account/themes/reload'
         headers = {
             **self.base_headers,
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             'X-Requested-With': 'XMLHttpRequest',
             'Sec-Fetch-Site': 'same-origin',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Dest': 'empty',
+            'Origin': 'https://micro.blog',
             'Referer': f'https://micro.blog/account/themes/{self.theme_id}/info'
         }
         
         try:
-            response = requests.get(url, headers=headers, timeout=30)
+            # POST with empty body, allow redirects
+            response = requests.post(url, headers=headers, timeout=30, data='', allow_redirects=True)
             
-            if response.status_code == 200:
+            # The endpoint redirects to templates?reloading=1 which returns 404, but it works
+            if response.status_code in [200, 302, 404]:
                 print("✅ Theme reload from GitHub triggered successfully")
+                if response.status_code == 404:
+                    print("   (Endpoint returns 404 but reload is working)")
                 return True
-            elif response.status_code == 404:
-                print(f"✅ Theme reload triggered (endpoint returns 404 but appears to work)")
-                print("   Note: This endpoint refreshes theme files from your GitHub repo")
-                return True  # Endpoint works despite 404 response
             else:
-                print(f"⚠️  Theme reload returned status {response.status_code}")
+                print(f"⚠️  Theme reload returned unexpected status {response.status_code}")
                 if response.text:
                     print(f"   Response: {response.text[:200]}")
                 return True  # Non-fatal
