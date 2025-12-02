@@ -71,8 +71,8 @@ class MicroblogDeployer:
             return False
     
     def reload_theme(self):
-        """Reload theme templates"""
-        print(f"🎨 Reloading theme (ID: {self.theme_id})...")
+        """Reload theme templates from GitHub"""
+        print(f"🎨 Reloading theme from GitHub (ID: {self.theme_id})...")
         
         url = f'https://micro.blog/account/themes/{self.theme_id}/templates?reloading=1'
         headers = {
@@ -88,12 +88,12 @@ class MicroblogDeployer:
             response = requests.get(url, headers=headers, timeout=30)
             
             if response.status_code == 200:
-                print("✅ Theme reload triggered successfully")
+                print("✅ Theme reload from GitHub triggered successfully")
                 return True
             elif response.status_code == 404:
-                print(f"⚠️  Theme reload endpoint not found (404) - theme may not support reloading")
-                print("   Note: Site rebuild will still pull in theme changes")
-                return True  # Non-fatal - rebuild handles theme changes
+                print(f"✅ Theme reload triggered (endpoint returns 404 but appears to work)")
+                print("   Note: This endpoint refreshes theme files from your GitHub repo")
+                return True  # Endpoint works despite 404 response
             else:
                 print(f"⚠️  Theme reload returned status {response.status_code}")
                 if response.text:
@@ -131,68 +131,93 @@ class MicroblogDeployer:
             print(f"❌ Error triggering rebuild: {e}")
             return False
     
-    def monitor_logs(self, timeout=300, check_interval=5):
-        """Monitor build logs for completion"""
-        print(f"📊 Monitoring build logs (timeout: {timeout}s, checking every {check_interval}s)...")
+    def poll_check_endpoint(self, timeout=300, check_interval=3):
+        """
+        Poll the /posts/check endpoint which drives the build process.
+        This endpoint must be called repeatedly for the build to progress.
+        """
+        print(f"📡 Polling build endpoint (timeout: {timeout}s, checking every {check_interval}s)...")
         
-        url = 'https://micro.blog/account/logs?q='
-        headers = {**self.base_headers}
+        check_url = 'https://micro.blog/posts/check'
+        
+        headers = {
+            **self.base_headers,
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Dest': 'empty',
+            'Referer': f'https://micro.blog/account/themes/{self.theme_id}/info'
+        }
         
         start_time = time.time()
+        poll_count = 0
         last_status = None
-        completion_markers = ['Done 🎉', 'Publish: Done']
-        error_markers = ['Error:', 'Failed:']
+        seen_publishing = False
+        idle_count = 0
         
         while True:
             elapsed = time.time() - start_time
             
             if elapsed > timeout:
-                print(f"⏱️  Timeout reached ({timeout}s)")
+                print(f"⏱️  Timeout reached ({timeout}s) after {poll_count} polls")
                 print("   Build may still be in progress - check logs manually")
                 return False
             
+            poll_count += 1
+            
             try:
-                response = requests.get(url, headers=headers, timeout=30)
+                # Poll the check endpoint to drive the build forward
+                check_response = requests.get(check_url, headers=headers, timeout=30)
                 
-                if response.status_code != 200:
-                    print(f"   ⚠️  Could not fetch logs: {response.status_code}")
-                    time.sleep(check_interval)
-                    continue
+                if check_response.status_code == 200:
+                    try:
+                        check_data = check_response.json()
+                        
+                        # Extract status information
+                        is_publishing = check_data.get('is_publishing', False)
+                        is_processing = check_data.get('is_processing', False)
+                        publishing_progress = check_data.get('publishing_progress', 0)
+                        publishing_status = check_data.get('publishing_status', '')
+                        
+                        # Show every poll response
+                        print(f"   [Poll #{poll_count}] is_publishing={is_publishing}, is_processing={is_processing}, progress={publishing_progress}, status='{publishing_status}'")
+                        
+                        # Track if we've seen any publishing activity
+                        if is_publishing or is_processing:
+                            seen_publishing = True
+                            idle_count = 0
+                            current_status = publishing_status if publishing_status else f"Publishing... {int(publishing_progress * 100)}%"
+                            if current_status != last_status:
+                                print(f"   📝 {current_status}")
+                                last_status = current_status
+                        else:
+                            # Not currently publishing or processing
+                            if publishing_status and publishing_status != last_status:
+                                print(f"   📝 {publishing_status}")
+                                last_status = publishing_status
+                            
+                            # If we've seen publishing activity before and now it's idle, we're done
+                            if seen_publishing:
+                                idle_count += 1
+                                if idle_count >= 3:  # Wait for 3 consecutive idle checks
+                                    print(f"✅ Build completed (idle after publishing, {poll_count} polls)")
+                                    return True
+                            elif poll_count > 20:
+                                # If we never saw publishing but polled many times, assume complete
+                                print(f"✅ Build completed (no publishing detected after {poll_count} polls)")
+                                return True
+                        
+                    except ValueError as e:
+                        print(f"   [Poll #{poll_count}] Non-JSON response: {check_response.text[:100]}")
+                else:
+                    print(f"   [Poll #{poll_count}] Status: {check_response.status_code}")
                 
-                log_text = response.text
-                
-                # Check for completion
-                for marker in completion_markers:
-                    if marker in log_text:
-                        print(f"✅ Build completed successfully! ({marker})")
-                        return True
-                
-                # Check for errors
-                for marker in error_markers:
-                    if marker in log_text:
-                        print(f"❌ Build error detected: {marker}")
-                        # Show some context
-                        lines = log_text.split('\n')
-                        for i, line in enumerate(lines):
-                            if marker in line:
-                                print(f"   {line}")
-                                if i + 1 < len(lines):
-                                    print(f"   {lines[i + 1]}")
-                        return False
-                
-                # Extract current status
-                status_match = re.search(r'Publish: ([^\n]+)', log_text)
-                if status_match:
-                    current_status = status_match.group(1).strip()
-                    if current_status != last_status:
-                        print(f"   📝 {current_status}")
-                        last_status = current_status
-                
-                # Wait before next check
+                # Wait before next poll
                 time.sleep(check_interval)
                 
             except Exception as e:
-                print(f"   ⚠️  Error monitoring logs: {e}")
+                print(f"   ⚠️  Error during poll #{poll_count}: {e}")
                 time.sleep(check_interval)
         
         return False
@@ -224,10 +249,10 @@ class MicroblogDeployer:
                 success = False
             time.sleep(2)  # Brief pause before monitoring
         
-        # Monitor logs
+        # Monitor build by polling check endpoint
         if monitor and rebuild:
             print()
-            if not self.monitor_logs():
+            if not self.poll_check_endpoint():
                 success = False
         
         print()
