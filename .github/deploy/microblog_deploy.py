@@ -90,9 +90,14 @@ class MicroblogDeployer:
             'X-Requested-With': 'XMLHttpRequest'
         }
         
+        # Send theme_id as form data
+        form_data = {
+            'theme_id': self.theme_id
+        }
+        
         try:
-            # POST with empty body, DON'T follow redirects - let it return 302
-            response = requests.post(url, headers=headers, timeout=30, data='', allow_redirects=False)
+            # POST with theme_id, DON'T follow redirects - let it return 302
+            response = requests.post(url, headers=headers, timeout=30, data=form_data, allow_redirects=False)
             
             # Should get a 302 redirect
             if response.status_code == 302:
