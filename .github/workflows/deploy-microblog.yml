@@ -9,6 +9,7 @@ on:
       - 'static/**'
       - 'theme.toml'
       - 'config.json'
+      - 'config.toml'
   workflow_dispatch:
     inputs:
       theme_id:
