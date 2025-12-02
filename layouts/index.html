@@ -799,7 +799,8 @@
                         <a href="/archive/" class="section-action">View All →</a>
                     </div>
                     <div class="news-items">
-                        {{ $recentPosts := first 5 .Site.RegularPages.ByDate.Reverse }}
+                        {{ $recentPosts := where .Site.RegularPages "Type" "not in" (slice "archive" "newsletter") }}
+                        {{ $recentPosts = first 5 $recentPosts.ByDate.Reverse }}
                         {{ range $recentPosts }}
                         <article class="news-item">
                             <div class="news-meta">
@@ -855,7 +856,8 @@
                 <!-- Recent Activity -->
                 <div class="sidebar-card">
                     <h3 class="sidebar-card-title">Recent Activity</h3>
-                    {{ $recentActivity := first 6 .Site.RegularPages.ByDate.Reverse }}
+                    {{ $recentActivity := where .Site.RegularPages "Type" "not in" (slice "archive" "newsletter") }}
+                    {{ $recentActivity = first 6 $recentActivity.ByDate.Reverse }}
                     {{ range $recentActivity }}
                     <div class="sidebar-stat">
                         <span class="sidebar-stat-label" style="font-size: 0.8125rem; max-width: 60%;">{{ .Title | truncate 30 }}</span>
