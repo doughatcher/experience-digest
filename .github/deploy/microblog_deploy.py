@@ -108,44 +108,33 @@ class MicroblogDeployer:
             return True  # Non-fatal
     
     def trigger_rebuild(self):
-        """Trigger full site rebuild by posting to republish endpoint"""
-        print("🔨 Triggering full site rebuild...")
+        """Trigger full site rebuild by visiting the logs page which starts the build"""
+        print("🔨 Triggering site rebuild via logs page...")
         
-        # The actual rebuild endpoint that forces a republish
-        url = 'https://micro.blog/posts/republish'
+        # Visit the logs page - this triggers the build process
+        url = 'https://micro.blog/account/logs'
         headers = {
             **self.base_headers,
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Dest': 'empty',
-            'X-Requested-With': 'XMLHttpRequest',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Dest': 'document',
             'Referer': f'https://micro.blog/account/themes/{self.theme_id}/info'
         }
         
         try:
-            response = requests.post(url, headers=headers, timeout=30, data='')
+            response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
             
             if response.status_code == 200:
                 print("✅ Site rebuild triggered successfully")
                 return True
-            elif response.status_code == 302:
-                print("✅ Site rebuild triggered (redirected)")
-                return True
             else:
-                print(f"⚠️  Site rebuild returned status {response.status_code}")
-                # Try alternative method - just visiting logs page to trigger
-                print("   Attempting alternative rebuild trigger...")
-                log_url = 'https://micro.blog/account/logs'
-                log_response = requests.get(log_url, headers={**self.base_headers}, timeout=30)
-                if log_response.status_code == 200:
-                    print("✅ Alternative rebuild triggered")
-                    return True
-                return False
+                print(f"⚠️  Logs page returned status {response.status_code}")
+                return True  # Non-fatal
                 
         except Exception as e:
-            print(f"❌ Error triggering rebuild: {e}")
-            return False
+            print(f"⚠️  Error visiting logs page: {e}")
+            return True  # Non-fatal
     
     def poll_check_endpoint(self, timeout=60, check_interval=5):
         """
@@ -184,7 +173,12 @@ class MicroblogDeployer:
             
             try:
                 # Poll the check endpoint to drive the build forward
-                check_response = requests.get(check_url, headers=headers, timeout=30)
+                # Important: allow_redirects=True to follow any redirects
+                check_response = requests.get(check_url, headers=headers, timeout=30, allow_redirects=True)
+                
+                # Check if we were redirected
+                if check_response.history:
+                    print(f"   [Poll #{poll_count}] Followed redirect: {check_response.url}")
                 
                 if check_response.status_code == 200:
                     try:
