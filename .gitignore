@@ -2,6 +2,7 @@
 public/
 .DS_Store
 .env
+.session-cookie
 __pycache__/
 *.pyc
 *.pyo

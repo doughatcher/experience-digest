@@ -44,3 +44,64 @@ refresh: scrape build
 
 deps:
     pip3 install pyyaml
+
+# Micro.blog Deployment Automation
+# ================================
+
+# Authenticate to Micro.blog via email and save session cookie
+microblog-auth:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🔐 Authenticating to Micro.blog..."
+    python3 .github/deploy/microblog_auth.py --output .session-cookie
+
+# Validate existing session cookie
+microblog-validate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🔍 Validating session cookie..."
+    python3 .github/deploy/microblog_deploy.py --validate-only
+
+# Reload theme templates only
+microblog-reload:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🎨 Reloading Micro.blog theme..."
+    python3 .github/deploy/microblog_deploy.py --reload
+
+# Trigger full site rebuild only
+microblog-rebuild:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🔨 Triggering Micro.blog rebuild..."
+    python3 .github/deploy/microblog_deploy.py --rebuild
+
+# Monitor build logs for completion
+microblog-monitor:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "📊 Monitoring build logs..."
+    python3 .github/deploy/microblog_deploy.py --monitor
+
+# Full deployment: authenticate, reload theme, rebuild, and monitor
+microblog-deploy-all:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🚀 Running full Micro.blog deployment..."
+    just microblog-auth
+    echo ""
+    python3 .github/deploy/microblog_deploy.py --all
+
+# Quick deployment (assumes valid session exists): reload, rebuild, monitor
+microblog-deploy:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    echo "🚀 Deploying to Micro.blog (using existing session)..."
+    python3 .github/deploy/microblog_deploy.py --all

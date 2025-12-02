@@ -195,11 +195,22 @@ sources:
       - vulnerability
 ```
 
-### GitHub Secrets
+### GitHub Secrets and Variables
 
-Required secrets for GitHub Actions:
+Required for GitHub Actions:
+
+**Secrets** (Settings → Secrets and variables → Actions → Secrets):
+- `GMAIL_APP_PASSWORD`: Gmail App Password (see [DEPLOYMENT.md](DEPLOYMENT.md) for setup)
 - `MICROBLOG_TOKEN`: Your Micro.blog API token
 - `MICROBLOG_MP_DESTINATION`: Your blog URL (e.g., `https://adobedigest.micro.blog/`)
+
+**Variables** (Settings → Secrets and variables → Actions → Variables):
+- `GMAIL_EMAIL`: Gmail address for receiving sign-in emails
+- `MICROBLOG_EMAIL`: Micro.blog account email
+- `MICROBLOG_SITE_ID`: Your site's numeric ID
+- `MICROBLOG_THEME_ID`: Your theme's numeric ID
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
 
 ## Workflows
 
@@ -208,9 +219,41 @@ Required secrets for GitHub Actions:
 - **Manual**: Via workflow_dispatch
 - **Actions**: Scrape sources → Post to Micro.blog → Commit tracking file
 
+### Deploy to Micro.blog (`deploy-microblog.yml`)
+- **Trigger**: Push to main (theme files only)
+- **Manual**: Via workflow_dispatch
+- **Actions**: Email auth → Reload theme → Rebuild site → Monitor logs
+- **Features**: Session caching (7-day TTL), automatic re-authentication
+
 ### Test (`test.yml`)
 - **Trigger**: Push to main, PRs
 - **Actions**: Validate YAML, test scraper, verify Hugo build
+
+## Deployment
+
+### Automated Deployment
+
+Theme changes automatically trigger deployment to Micro.blog when you push to main:
+- Changes to `layouts/`, `static/`, `theme.toml`, or `config.json`
+- Uses email-based authentication with session caching
+- Monitors build logs for completion
+
+### Manual Deployment
+
+```bash
+# Full deployment with authentication
+just microblog-deploy-all
+
+# Quick deployment (reuses existing session)
+just microblog-deploy
+
+# Individual operations
+just microblog-auth       # Authenticate and save session
+just microblog-reload     # Reload theme only
+just microblog-rebuild    # Trigger rebuild only
+```
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete documentation.
 
 ## Project Structure
 

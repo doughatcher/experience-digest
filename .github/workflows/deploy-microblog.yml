@@ -1,0 +1,106 @@
+name: Deploy to Micro.blog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'layouts/**'
+      - 'static/**'
+      - 'theme.toml'
+      - 'config.json'
+  workflow_dispatch:
+    inputs:
+      theme_id:
+        description: 'Override theme ID (optional)'
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          cd scraper
+          pip install -r requirements.txt
+      
+      - name: Generate cache key date prefix
+        id: cache-key
+        run: |
+          # Generate a date-based prefix for cache key (changes daily)
+          DATE_PREFIX=$(date -u +%Y-%m-%d)
+          echo "date_prefix=${DATE_PREFIX}" >> $GITHUB_OUTPUT
+          echo "📅 Cache date prefix: ${DATE_PREFIX}"
+      
+      - name: Restore session cookie from cache
+        id: cache-session
+        uses: actions/cache@v4
+        with:
+          path: .session-cookie
+          key: microblog-session-${{ github.repository }}-${{ steps.cache-key.outputs.date_prefix }}
+          restore-keys: |
+            microblog-session-${{ github.repository }}-
+      
+      - name: Authenticate to Micro.blog
+        if: steps.cache-session.outputs.cache-hit != 'true'
+        env:
+          GMAIL_EMAIL: ${{ vars.GMAIL_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MICROBLOG_EMAIL: ${{ vars.MICROBLOG_EMAIL }}
+          MICROBLOG_SITE_ID: ${{ vars.MICROBLOG_SITE_ID }}
+        run: |
+          echo "🔐 No cached session found - authenticating..."
+          python3 .github/deploy/microblog_auth.py --output .session-cookie
+      
+      - name: Validate session cookie
+        env:
+          MICROBLOG_THEME_ID: ${{ inputs.theme_id || vars.MICROBLOG_THEME_ID }}
+        run: |
+          echo "🔍 Validating session cookie..."
+          python3 .github/deploy/microblog_deploy.py --validate-only
+      
+      - name: Deploy to Micro.blog
+        env:
+          MICROBLOG_THEME_ID: ${{ inputs.theme_id || vars.MICROBLOG_THEME_ID }}
+        run: |
+          echo "🚀 Deploying to Micro.blog..."
+          python3 .github/deploy/microblog_deploy.py --all
+      
+      - name: Create deployment summary
+        if: always()
+        run: |
+          echo "## Micro.blog Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.cache-session.outputs.cache-hit }}" = "true" ]; then
+            echo "- 🔐 **Authentication:** Used cached session" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- 🔐 **Authentication:** Fresh login via email" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "- ✅ **Deployment Status:** Successful" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ **Deployment Status:** Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "- 🎨 **Theme ID:** ${{ inputs.theme_id || secrets.MICROBLOG_THEME_ID }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🕒 **Completed:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changed Files" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only HEAD~1 HEAD | grep -E '(layouts/|static/|theme\.toml|config\.json)' || echo "No theme files changed"
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
