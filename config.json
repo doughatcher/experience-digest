@@ -162,5 +162,6 @@
       "enabled": false,
       "default": ""
     }
-  }
+  },
+  "summaryLength": 0
 }
