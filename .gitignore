@@ -16,3 +16,5 @@ hugo_*
 *.tar.gz
 
 content/
+!content/products/
+!content/archive/
