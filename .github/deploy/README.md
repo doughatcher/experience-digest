@@ -8,18 +8,20 @@ Micro.blog doesn't provide traditional API tokens or CI/CD integration. This sol
 
 1. **Email-based Authentication**: Uses Micro.blog's "Sign in with email" feature to obtain a session cookie
 2. **Session Cookie Caching**: Stores the session cookie (7-day expiry) to avoid re-authentication on every deployment
-3. **Build Automation**: Triggers theme reloads and site rebuilds programmatically
-4. **Build Monitoring**: Polls the `/posts/check` endpoint to drive the build process and monitor completion
+3. **Theme Reload**: POSTs to `/account/themes/reload` to sync theme files from GitHub
+4. **Build Automation**: Visits `/account/logs` to trigger site rebuild
+5. **Build Monitoring**: Polls `/posts/check` to monitor build completion
 
 ## Architecture
 
 ### Why Poll `/posts/check`?
 
-Micro.blog's web interface continuously polls the `/posts/check` endpoint while a build is in progress. This polling **actively drives the build process forward** - without it, builds sit idle. Our automation mimics this behavior by:
+Micro.blog's web interface polls the `/posts/check` endpoint to monitor build progress. Our automation mimics this behavior by:
 
-- Polling every 3 seconds (matching browser behavior)
+- Polling every 5 seconds with redirect following
 - Monitoring `is_publishing`, `is_processing`, and `publishing_status` fields
-- Continuing until the build completes or times out (5 minutes default)
+- Completing after seeing activity transition to idle (typically 5-10 polls)
+- Timing out after 60 seconds if no completion detected
 
 ### Authentication Flow
 
@@ -56,8 +58,10 @@ Micro.blog's web interface continuously polls the `/posts/check` endpoint while 
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 2. Reload theme templates (optional)                       │
-│    - GET /account/themes/{id}/templates?reloading=1        │
+│ 2. Reload theme templates from GitHub                      │
+│    - POST /account/themes/reload (with theme_id)           │
+│    - Returns 302 → /account/themes/{id}/templates?reload=1│
+│    - Redirected endpoint returns 404 (expected)            │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -66,10 +70,10 @@ Micro.blog's web interface continuously polls the `/posts/check` endpoint while 
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. Poll /posts/check repeatedly                            │
-│    - Drives build process forward                          │
-│    - Monitors publishing_status                            │
-│    - Detects completion via state changes                  │
+│ 4. Poll /posts/check repeatedly (with redirect following)  │
+│    - Monitors publishing_status changes                    │
+│    - Completes when status goes idle after activity        │
+│    - Typical completion: 15-50 seconds (5-10 polls)        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -261,13 +265,13 @@ python3 .github/deploy/microblog_auth.py
 
 ### Build Times Out
 
-**Symptoms**: "Timeout reached (300s) after N polls"
+**Symptoms**: "Timeout reached (60s) after N polls"
 
 **Solution**:
-1. Builds can take several minutes for large sites
-2. Increase timeout: `--timeout 600` (10 minutes)
-3. Check build manually at micro.blog/account/logs
-4. Look for actual errors in the build logs
+1. Typical builds complete in 15-50 seconds
+2. If timing out consistently, check build logs at micro.blog/account/logs
+3. Look for actual errors in the build logs
+4. Note: timeout may indicate build started successfully but monitoring ended early
 
 ### Wrong Blog Being Updated
 
@@ -327,9 +331,9 @@ The `/posts/check` endpoint returns JSON:
 ```
 
 The script polls until:
-- `is_publishing` or `is_processing` becomes `false` (after being `true`)
-- Status remains idle for 3 consecutive polls
-- Timeout is reached (default 300s)
+- Status transitions from active to idle (3+ polls after seeing activity)
+- Maximum 10 polls reached (50 seconds)
+- Timeout is reached (default 60s)
 
 ### GitHub Actions Caching Strategy
 
@@ -372,8 +376,8 @@ Where `date_prefix` is `YYYY-MM-DD`, ensuring:
 1. **Email-based auth only**: Requires Gmail IMAP access
 2. **7-day session limit**: Requires weekly re-authentication
 3. **Single blog per repo**: Designed for one theme → one blog workflow
-4. **No API rate limits known**: Conservative 3-second polling interval used
-5. **Build timeout**: Very large sites may need extended timeout
+4. **Theme reload requires theme_id**: Must be a custom theme, not a built-in theme
+5. **Build monitoring is approximate**: Completion detection based on status polling
 
 ## Future Improvements
 
