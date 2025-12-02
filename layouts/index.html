@@ -172,14 +172,21 @@
             margin-top: 3rem;
         }
         
-        .main-content {
-            min-width: 0; /* Prevent grid blowout */
+        .content-with-sidebar .main-content {
+            min-width: 0;
+            margin-left: 0;
+            padding: 0;
         }
         
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        .content-with-sidebar .sidebar {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: 0;
+            background: none;
+            border: none;
+            margin-left: 0;
+            justify-content: flex-start;
         }
         
         .sidebar-card {
