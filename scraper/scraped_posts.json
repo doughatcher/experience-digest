@@ -139,6 +139,7 @@
     "adobe-commerce-2-4-9-alpha1",
     "adobe-commerce-2-4-9-alpha2",
     "adobe-commerce-2-4-9-alpha3",
+    "akamai-blog-grim-sessionreaper-cve-2025-54236-comes-collect-halloween",
     "akamai-blog-new-sophisticated-magento-campaign-xurum-webshell",
     "and-europol-counter-online",
     "client-side-security",
@@ -183,8 +184,12 @@
     "nist-cve-2025-61796",
     "nist-cve-2025-61797",
     "nist-cve-2025-64174",
+    "nist-cve-2025-64825",
     "nist-cve-2025-64826",
     "nist-cve-2025-64827",
+    "nist-cve-2025-64829",
+    "nist-cve-2025-64833",
+    "nist-cve-2025-64839",
     "nist-cve-2025-64840",
     "nist-cve-2025-64841",
     "nist-cve-2025-64845",
@@ -299,6 +304,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2025-12-11T18:32:08.847205",
-  "total_count": 298
+  "last_updated": "2025-12-12T01:44:37.478828",
+  "total_count": 303
 }
