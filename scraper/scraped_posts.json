@@ -231,8 +231,12 @@
     "nist-cve-2025-64594",
     "nist-cve-2025-64596",
     "nist-cve-2025-64597",
+    "nist-cve-2025-64598",
+    "nist-cve-2025-64599",
+    "nist-cve-2025-64600",
     "nist-cve-2025-64601",
     "nist-cve-2025-64602",
+    "nist-cve-2025-64607",
     "nist-cve-2025-64789",
     "nist-cve-2025-64790",
     "nist-cve-2025-64791",
@@ -340,6 +344,7 @@
     "sansec-magentocore.net-skimmer-most-aggressive-to-date",
     "sansec-malware-persistence-via-telegram-and-github",
     "sansec-merchants-struggle-with-magecart-reinfections",
+    "sansec-mgt-varnish-critical-vulnerability",
     "sansec-naturalfreshmall-mass-hack",
     "sansec-nginrat",
     "sansec-north-korea-magecart",
@@ -374,6 +379,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2025-12-15T12:49:11.027609",
-  "total_count": 373
+  "last_updated": "2025-12-15T18:33:48.754050",
+  "total_count": 378
 }
