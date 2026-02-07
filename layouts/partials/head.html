@@ -20,9 +20,7 @@
     <title>{{ $title }}</title>
     
     <!-- RSS Feed -->
-    {{ with .OutputFormats.Get "rss" }}
-        <link href="{{ .Permalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
-    {{ end }}
+    <link href="https://adobedigest.com/feed.json" rel="alternate" type="application/json" title="{{ .Site.Title }}" />
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
