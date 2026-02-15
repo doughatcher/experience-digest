@@ -1,0 +1,176 @@
+name: Scheduled Backup
+
+on:
+  schedule:
+    # Run every Sunday at 3am UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      site_id:
+        description: 'Override site ID (optional)'
+        required: false
+        type: string
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: '.github/deploy/requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          cd .github/deploy
+          pip install -r requirements.txt
+
+      - name: Generate cache key date prefix
+        id: cache-key
+        run: |
+          # Generate a date-based prefix for cache key (changes daily)
+          DATE_PREFIX=$(date -u +%Y-%m-%d)
+          echo "date_prefix=${DATE_PREFIX}" >> $GITHUB_OUTPUT
+          echo "📅 Cache date prefix: ${DATE_PREFIX}"
+
+      - name: Restore session cookie from cache
+        id: cache-session
+        uses: actions/cache@v4
+        with:
+          path: .session-cookie
+          key: microblog-session-${{ github.repository }}-${{ steps.cache-key.outputs.date_prefix }}
+          restore-keys: |
+            microblog-session-${{ github.repository }}-
+
+      - name: Authenticate to Micro.blog
+        if: steps.cache-session.outputs.cache-hit != 'true'
+        env:
+          GMAIL_EMAIL: ${{ vars.GMAIL_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MICROBLOG_EMAIL: ${{ vars.MICROBLOG_EMAIL }}
+          MICROBLOG_SITE_ID: ${{ inputs.site_id || vars.MICROBLOG_SITE_ID }}
+        run: |
+          echo "🔐 No cached session found - authenticating..."
+          python3 .github/deploy/microblog_auth.py --output .session-cookie
+
+      - name: Validate session cookie
+        env:
+          MICROBLOG_SITE_ID: ${{ inputs.site_id || vars.MICROBLOG_SITE_ID }}
+          MICROBLOG_THEME_ID: ${{ vars.MICROBLOG_THEME_ID }}
+        run: |
+          echo "🔍 Validating session cookie..."
+          python3 .github/deploy/microblog_deploy.py --validate-only
+
+      - name: Trigger backup export and download
+        env:
+          MICROBLOG_SITE_ID: ${{ inputs.site_id || vars.MICROBLOG_SITE_ID }}
+          GMAIL_EMAIL: ${{ vars.GMAIL_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          echo "📦 Triggering backup export from Micro.blog..."
+          python3 .github/deploy/microblog_backup.py --export-only --max-retries 50 --retry-interval 24
+
+      - name: Generate backup metadata
+        id: backup-metadata
+        run: |
+          # Generate timestamp for release tag
+          TIMESTAMP=$(date -u +%Y-%m-%d-%H%M%S)
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "tag=backup-${TIMESTAMP}" >> $GITHUB_OUTPUT
+
+          # Find the downloaded ZIP file
+          ZIP_FILE=$(ls -t backups/*.zip 2>/dev/null | head -1)
+          if [ -n "$ZIP_FILE" ]; then
+            echo "zip_file=${ZIP_FILE}" >> $GITHUB_OUTPUT
+            echo "zip_name=$(basename ${ZIP_FILE})" >> $GITHUB_OUTPUT
+            echo "✅ Found backup file: ${ZIP_FILE}"
+          else
+            echo "❌ No backup file found"
+            exit 1
+          fi
+
+      - name: Create release with backup
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Create release notes
+          cat << EOF > release-notes.md
+          # Automated Micro.blog Backup
+
+          **Backup Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          **Git Commit:** ${{ github.sha }}
+          **Repository State:** ${{ github.ref_name }} branch
+
+          ## Contents
+
+          This release contains a complete theme export from Micro.blog, including:
+          - Content files (blog posts, pages)
+          - Data files (sources, configuration)
+          - Theme layouts and templates
+          - Static assets
+
+          ## Restoration
+
+          To restore this backup locally:
+
+          \`\`\`bash
+          # Download the backup ZIP from this release
+          # Extract to your local repository
+          just backup-extract ${{ steps.backup-metadata.outputs.zip_name }}
+          \`\`\`
+
+          ## Backup Archive
+
+          - **File:** ${{ steps.backup-metadata.outputs.zip_name }}
+          - **Size:** $(du -h "${{ steps.backup-metadata.outputs.zip_file }}" | cut -f1)
+
+          ---
+
+          This backup was created automatically by the scheduled-backup workflow.
+          EOF
+
+          # Create release
+          gh release create "${{ steps.backup-metadata.outputs.tag }}" \
+            --title "Backup ${{ steps.backup-metadata.outputs.timestamp }}" \
+            --notes-file release-notes.md \
+            "${{ steps.backup-metadata.outputs.zip_file }}"
+
+          echo "✅ Release created: ${{ steps.backup-metadata.outputs.tag }}"
+
+      - name: Create workflow summary
+        if: always()
+        run: |
+          echo "## Micro.blog Backup" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Session cache status with monitoring info
+          if [ "${{ steps.cache-session.outputs.cache-hit }}" = "true" ]; then
+            echo "- 🔐 **Authentication:** Used cached session ✅" >> $GITHUB_STEP_SUMMARY
+            echo "  - Cache key: \`microblog-session-${{ github.repository }}-${{ steps.cache-key.outputs.date_prefix }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- 🔐 **Authentication:** Fresh login via email 📧" >> $GITHUB_STEP_SUMMARY
+            echo "  - ⚠️ Email polling may take up to 15 minutes if Micro.blog is slow" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "- ✅ **Backup Status:** Successful" >> $GITHUB_STEP_SUMMARY
+            echo "- 📦 **Release:** ${{ steps.backup-metadata.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+            echo "- 📁 **Archive:** ${{ steps.backup-metadata.outputs.zip_name }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ **Backup Status:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "  - If auth failed, retry manually - email may already be waiting" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "- 🕒 **Completed:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Site ID:** ${{ inputs.site_id || vars.MICROBLOG_SITE_ID }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

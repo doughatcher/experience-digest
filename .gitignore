@@ -18,3 +18,6 @@ hugo_*
 content/
 !content/products/
 !content/archive/
+
+# Backup archives
+backups/

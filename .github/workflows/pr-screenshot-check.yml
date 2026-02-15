@@ -1,0 +1,214 @@
+name: PR Screenshot Verification
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-screenshots:
+    name: Verify Required Screenshots
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            layouts/**
+            static/**/*.css
+            config.json
+
+      - name: Check if template files were modified
+        id: check-template-changes
+        run: |
+          if [[ "${{ steps.changed-files.outputs.any_changed }}" == "true" ]]; then
+            echo "template_changed=true" >> $GITHUB_OUTPUT
+            echo "Template/code files were modified - screenshots required"
+          else
+            echo "template_changed=false" >> $GITHUB_OUTPUT
+            echo "No template/code files modified - screenshot check skipped"
+          fi
+
+      - name: Get PR body
+        if: steps.check-template-changes.outputs.template_changed == 'true'
+        id: pr-body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            return pr.body || '';
+          result-encoding: string
+
+      - name: Check for screenshots in PR description
+        if: steps.check-template-changes.outputs.template_changed == 'true'
+        id: check-screenshots
+        run: |
+          PR_BODY="${{ steps.pr-body.outputs.result }}"
+
+          # Count image references in PR body
+          DESKTOP_COUNT=$(echo "$PR_BODY" | grep -iE "(desktop.*screenshot|screenshot.*desktop|!\[.*desktop)" | wc -l)
+          TABLET_COUNT=$(echo "$PR_BODY" | grep -iE "(tablet.*screenshot|screenshot.*tablet|ipad.*pro|!\[.*tablet)" | wc -l)
+          MOBILE_COUNT=$(echo "$PR_BODY" | grep -iE "(mobile.*screenshot|screenshot.*mobile|iphone.*17.*pro|!\[.*mobile)" | wc -l)
+
+          # Also count actual image uploads (![...](https://...))
+          IMG_COUNT=$(echo "$PR_BODY" | grep -oE "!\[.*\]\(http" | wc -l)
+
+          echo "Desktop screenshots found: $DESKTOP_COUNT"
+          echo "Tablet screenshots found: $TABLET_COUNT"
+          echo "Mobile screenshots found: $MOBILE_COUNT"
+          echo "Total image uploads: $IMG_COUNT"
+
+          # Set outputs
+          echo "desktop_count=$DESKTOP_COUNT" >> $GITHUB_OUTPUT
+          echo "tablet_count=$TABLET_COUNT" >> $GITHUB_OUTPUT
+          echo "mobile_count=$MOBILE_COUNT" >> $GITHUB_OUTPUT
+          echo "img_count=$IMG_COUNT" >> $GITHUB_OUTPUT
+
+          # Check if we have at least 3 images and references to all three types
+          if [[ $IMG_COUNT -ge 3 ]] && [[ $DESKTOP_COUNT -ge 1 ]] && [[ $TABLET_COUNT -ge 1 ]] && [[ $MOBILE_COUNT -ge 1 ]]; then
+            echo "has_all_screenshots=true" >> $GITHUB_OUTPUT
+            echo "✅ All required screenshots appear to be present"
+          else
+            echo "has_all_screenshots=false" >> $GITHUB_OUTPUT
+            echo "❌ Missing required screenshots"
+          fi
+
+      - name: Comment on PR if screenshots missing
+        if: |
+          steps.check-template-changes.outputs.template_changed == 'true' &&
+          steps.check-screenshots.outputs.has_all_screenshots == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const desktopCount = ${{ steps.check-screenshots.outputs.desktop_count }};
+            const tabletCount = ${{ steps.check-screenshots.outputs.tablet_count }};
+            const mobileCount = ${{ steps.check-screenshots.outputs.mobile_count }};
+            const imgCount = ${{ steps.check-screenshots.outputs.img_count }};
+
+            let missingTypes = [];
+            if (desktopCount === 0) missingTypes.push('Desktop');
+            if (tabletCount === 0) missingTypes.push('Tablet (iPad Pro M4)');
+            if (mobileCount === 0) missingTypes.push('Mobile (iPhone 17 Pro)');
+
+            const message = `## ⚠️ Required Screenshots Missing
+
+            This PR modifies template, CSS, or configuration files and **must include screenshots** showing the changes on all three device types.
+
+            ### Current Status
+            - Desktop screenshots: ${desktopCount > 0 ? '✅' : '❌'} ${desktopCount} found
+            - Tablet screenshots: ${tabletCount > 0 ? '✅' : '❌'} ${tabletCount} found
+            - Mobile screenshots: ${mobileCount > 0 ? '✅' : '❌'} ${mobileCount} found
+            - Total images uploaded: ${imgCount}
+
+            ${missingTypes.length > 0 ? `### Missing: ${missingTypes.join(', ')}` : ''}
+
+            ### Required Screenshots
+
+            Please add the following screenshots to your PR description:
+
+            1. **Desktop View** (1920x1080 or 1440x900)
+               - Full browser window showing the changes
+
+            2. **Tablet View** (iPad Pro M4 - 1366x1024)
+               - Use Safari or Chrome DevTools device simulation
+               - Show landscape or portrait orientation
+
+            3. **Mobile View** (iPhone 17 Pro - 402x874)
+               - Use Safari or Chrome DevTools device simulation
+               - Ensure all interactive elements are visible
+
+            ### How to Add Screenshots
+
+            1. Take screenshots on each device size
+            2. Edit this PR description
+            3. Drag and drop images into the description editor
+            4. Add labels like "Desktop View", "Tablet View", "Mobile View"
+            5. Save the updated description
+
+            **This check will fail until all three screenshot types are present.**`;
+
+            // Check if we already commented
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Required Screenshots Missing')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: message
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: message
+              });
+            }
+
+      - name: Set check status
+        if: steps.check-template-changes.outputs.template_changed == 'true'
+        run: |
+          if [[ "${{ steps.check-screenshots.outputs.has_all_screenshots }}" == "true" ]]; then
+            echo "✅ Screenshot verification passed"
+            exit 0
+          else
+            echo "❌ Screenshot verification failed - missing required screenshots"
+            exit 1
+          fi
+
+      - name: Success message
+        if: |
+          steps.check-template-changes.outputs.template_changed == 'true' &&
+          steps.check-screenshots.outputs.has_all_screenshots == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Remove the warning comment if screenshots are now present
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Required Screenshots Missing')
+            );
+
+            if (botComment) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id
+              });
+            }
+
+            // Add success comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: '## ✅ Screenshot Verification Passed\n\nAll required screenshots (desktop, tablet, mobile) are present. Thank you for following the PR guidelines!'
+            });

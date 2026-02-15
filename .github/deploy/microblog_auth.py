@@ -81,22 +81,36 @@ class MicroblogAuthenticator:
             print(f"❌ Error requesting sign-in email: {e}")
             return None
     
-    def connect_to_gmail(self):
-        """Connect to Gmail via IMAP"""
-        try:
-            mail = imaplib.IMAP4_SSL('imap.gmail.com')
-            mail.login(self.gmail_email, self.gmail_password)
-            return mail
-        except Exception as e:
-            print(f"❌ Error connecting to Gmail: {e}")
-            return None
+    def connect_to_gmail(self, max_attempts=3):
+        """Connect to Gmail via IMAP with retry logic"""
+        for attempt in range(1, max_attempts + 1):
+            try:
+                if attempt > 1:
+                    print(f"   ⏳ Retrying IMAP connection (attempt {attempt}/{max_attempts})...")
+                    time.sleep(5)  # Wait 5 seconds before retry
+                mail = imaplib.IMAP4_SSL('imap.gmail.com')
+                mail.login(self.gmail_email, self.gmail_password)
+                if attempt > 1:
+                    print(f"   ✅ IMAP connection succeeded on attempt {attempt}")
+                return mail
+            except Exception as e:
+                print(f"   ⚠️  IMAP connection attempt {attempt}/{max_attempts} failed: {e}")
+                if attempt == max_attempts:
+                    print(f"❌ Failed to connect to Gmail after {max_attempts} attempts")
+                    return None
+        return None
     
-    def search_for_signin_email(self, mail, request_time, max_retries=5, retry_interval=12):
-        """Search for sign-in email with retries"""
-        print(f"🔍 Polling Gmail IMAP (up to {max_retries} retries, {retry_interval}s apart)...")
+    def search_for_signin_email(self, mail, request_time, max_retries=60, retry_interval=15):
+        """Search for sign-in email with retries
         
-        # Search emails from 1 minute before request
-        search_start = request_time - timedelta(minutes=1)
+        Default timeout: 60 retries × 15s = 15 minutes
+        This handles slow Micro.blog email delivery during high load.
+        """
+        total_timeout_mins = (max_retries * retry_interval) // 60
+        print(f"🔍 Polling Gmail IMAP (up to {max_retries} retries, {retry_interval}s apart, ~{total_timeout_mins} min timeout)...")
+        
+        # Search emails from 10 minutes before request (in case of clock skew)
+        search_start = request_time - timedelta(minutes=10)
         
         for attempt in range(1, max_retries + 1):
             try:
@@ -126,8 +140,8 @@ class MicroblogAuthenticator:
                     print(f"   ℹ️  Attempt {attempt}/{max_retries}: No emails found yet")
                     continue
                 
-                # Get last 20 emails (most recent first)
-                email_ids = email_ids[-20:][::-1]
+                # Get last 50 emails (most recent first) to handle busy inboxes
+                email_ids = email_ids[-50:][::-1]
                 
                 print(f"   📬 Found {len(email_ids)} sign-in emails, checking recent ones...")
                 
@@ -201,12 +215,20 @@ class MicroblogAuthenticator:
         
         session = requests.Session()
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': 'https://micro.blog/signin'
         }
         
         try:
             # Follow the magic link - it will redirect and set the session cookie
             response = session.get(magic_link, headers=headers, allow_redirects=True, timeout=30)
+            
+            # Debug: Print all cookies received
+            print(f"   📊 Received {len(session.cookies)} cookies:")
+            for cookie in session.cookies:
+                print(f"      - {cookie.name}: {cookie.value[:20]}...")
             
             if response.status_code == 200:
                 # Extract rack.session cookie
@@ -215,7 +237,11 @@ class MicroblogAuthenticator:
                         print(f"✅ Session cookie captured")
                         return cookie.value
                 
+                # Debug: Print response details
                 print("⚠️  No rack.session cookie found in response")
+                print(f"   Status: {response.status_code}")
+                print(f"   Final URL: {response.url}")
+                print(f"   Headers: {dict(response.headers)}")
                 return None
             else:
                 print(f"❌ Failed to follow magic link: {response.status_code}")
@@ -223,6 +249,8 @@ class MicroblogAuthenticator:
                 
         except Exception as e:
             print(f"❌ Error following magic link: {e}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def switch_active_blog(self, session_cookie):

@@ -105,3 +105,27 @@ microblog-deploy:
     cd "{{justfile_directory()}}"
     echo "🚀 Deploying to Micro.blog (using existing session)..."
     python3 .github/deploy/microblog_deploy.py --all
+
+# Micro.blog Backup Automation
+# =============================
+
+# Backup content from Micro.blog (export + download + extract)
+backup:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    python3 .github/deploy/microblog_backup.py --all
+
+# Backup and download only (no extraction)
+backup-download:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    python3 .github/deploy/microblog_backup.py --export-only
+
+# Extract content from existing backup ZIP
+backup-extract ZIP_FILE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    python3 .github/deploy/microblog_backup.py --extract-only {{ZIP_FILE}}
