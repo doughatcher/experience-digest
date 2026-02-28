@@ -10,7 +10,15 @@
         {{ $title = printf "%s - %s" .Title .Site.Title }}
     {{ end }}
     <title>{{ $title }}</title>
-    <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
+    <meta name="description" content="{{ if .IsHome }}An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
+    <meta name="author" content="Doug Hatcher">
+    <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+    <meta property="og:site_name" content="Adobe Digest — Independent Community Resource">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ if .IsHome }}An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ if .IsHome }}An independent community digest. Not affiliated with Adobe.{{ else }}{{ .Summary | truncate 100 }}{{ end }}">
     
     <!-- Micro.blog Discovery & IndieWeb -->
     {{ partial "microblog_head.html" . }}

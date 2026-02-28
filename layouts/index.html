@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adobe Digest</title>
-    
+    <title>Adobe Digest — Independent Adobe Security Monitoring</title>
+    <meta name="description" content="An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Community-maintained, not affiliated with Adobe.">
+    <meta name="author" content="Doug Hatcher">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Adobe Digest">
+    <meta property="og:title" content="Adobe Digest — Independent Adobe Security Monitoring">
+    <meta property="og:description" content="An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.">
+    <meta property="og:url" content="https://adobedigest.com">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Adobe Digest — Independent Adobe Security Monitoring">
+    <meta name="twitter:description" content="An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.">
+
     <!-- Micro.blog Discovery & IndieWeb -->
     {{ partial "microblog_head.html" . }}
     
@@ -36,17 +46,17 @@
         }
         
         body {
-            font-family: 'adobe-clean', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #f5f5f5;
-            background: #1e1e1e;
+            background: #111;
             min-height: 100vh;
         }
         
         /* Spectrum-inspired Header */
         .spectrum-header {
-            background: #2c2c2c;
-            border-bottom: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border-bottom: 1px solid #2a2a2a;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -99,7 +109,7 @@
         }
         
         .spectrum-nav-link:hover {
-            background: #3e3e3e;
+            background: #2a2a2a;
             color: #fff;
         }
         
@@ -114,9 +124,22 @@
         .hero-section {
             text-align: center;
             padding: 4rem 0 3rem 0;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #2a2a2a;
         }
-        
+
+        .hero-eyebrow {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border: 1px solid #EF4444;
+            border-radius: 20px;
+            font-size: 0.6875rem;
+            color: #EF4444;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+
         .hero-title {
             font-size: 2.75rem;
             font-weight: 700;
@@ -124,7 +147,7 @@
             margin-bottom: 1rem;
             letter-spacing: -0.03em;
         }
-        
+
         .hero-subtitle {
             font-size: 1.125rem;
             color: #b3b3b3;
@@ -146,8 +169,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.625rem 1.125rem;
-            background: #2c2c2c;
-            border: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 20px;
             font-size: 0.875rem;
             color: #d1d1d1;
@@ -193,15 +216,15 @@
         }
         
         .sidebar-card {
-            background: #2c2c2c;
-            border: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 1.5rem;
             transition: all 0.15s ease;
         }
         
         .sidebar-card:hover {
-            border-color: #4b4b4b;
+            border-color: #363636;
         }
         
         .sidebar-card-title {
@@ -210,7 +233,7 @@
             color: #fff;
             margin-bottom: 1rem;
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #2a2a2a;
         }
         
         .sidebar-stat {
@@ -218,7 +241,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.625rem 0;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #2a2a2a;
         }
         
         .sidebar-stat:last-child {
@@ -242,8 +265,8 @@
         
         /* Ad callout with close button */
         .ad-callout {
-            background: linear-gradient(135deg, #2c2c2c 0%, #323232 100%);
-            border: 1px solid #4b4b4b;
+            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+            border: 1px solid #363636;
             border-left: 3px solid #eb1000;
             border-radius: 8px;
             padding: 1.25rem;
@@ -311,7 +334,7 @@
             justify-content: space-between;
             margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #2a2a2a;
         }
         
         .section-title {
@@ -340,15 +363,15 @@
         }
         
         .news-item {
-            background: #2c2c2c;
-            border: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 1.5rem;
             transition: all 0.15s ease;
         }
         
         .news-item:hover {
-            border-color: #4b4b4b;
+            border-color: #363636;
             box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         
@@ -368,8 +391,8 @@
         .news-badge {
             display: inline-block;
             padding: 0.25rem 0.625rem;
-            background: #323232;
-            border: 1px solid #3e3e3e;
+            background: #222;
+            border: 1px solid #2a2a2a;
             border-radius: 12px;
             font-size: 0.6875rem;
             color: #d1d1d1;
@@ -405,15 +428,15 @@
         }
         
         .grid-card {
-            background: #2c2c2c;
-            border: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 1.5rem;
             transition: all 0.15s ease;
         }
         
         .grid-card:hover {
-            border-color: #4b4b4b;
+            border-color: #363636;
             box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         
@@ -423,7 +446,7 @@
             color: #fff;
             margin-bottom: 1.25rem;
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #2a2a2a;
         }
         
         .card-stats {
@@ -436,8 +459,8 @@
         .mini-stat {
             text-align: center;
             padding: 1rem;
-            background: #323232;
-            border: 1px solid #3e3e3e;
+            background: #222;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
         }
         
@@ -466,8 +489,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.75rem 1rem;
-            background: #323232;
-            border: 1px solid #3e3e3e;
+            background: #222;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
             font-size: 0.875rem;
             transition: all 0.15s ease;
@@ -475,7 +498,7 @@
         
         .item:hover {
             background: #383838;
-            border-color: #4b4b4b;
+            border-color: #363636;
         }
         
         .item-name {
@@ -537,7 +560,7 @@
         }
         
         .spectrum-btn-secondary:hover {
-            background: #3e3e3e;
+            background: #2a2a2a;
             border-color: #8e8e8e;
             color: #fff;
         }
@@ -552,14 +575,14 @@
         
         /* Footer - Spectrum Style */
         .spectrum-footer {
-            border-top: 1px solid #3e3e3e;
+            border-top: 1px solid #2a2a2a;
             margin-top: 4rem;
             padding-top: 2rem;
         }
         
         .subscribe-card {
-            background: #2c2c2c;
-            border: 1px solid #3e3e3e;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -593,8 +616,8 @@
             min-width: 250px;
             max-width: 400px;
             padding: 0.625rem 1rem;
-            background: #323232;
-            border: 1px solid #3e3e3e;
+            background: #222;
+            border: 1px solid #2a2a2a;
             border-radius: 4px;
             color: #f5f5f5;
             font-size: 0.875rem;
@@ -627,7 +650,7 @@
         .footer-social {
             text-align: center;
             padding-top: 1.5rem;
-            border-top: 1px solid #3e3e3e;
+            border-top: 1px solid #2a2a2a;
         }
         
         .social-title {
@@ -701,7 +724,7 @@
         
         .content-wrapper hr {
             border: none;
-            border-top: 1px solid #3e3e3e;
+            border-top: 1px solid #2a2a2a;
             margin: 1.5rem 0;
         }
         
@@ -778,8 +801,9 @@
     <div class="container">
         <!-- Hero Section -->
         <section class="hero-section">
+            <div class="hero-eyebrow">Independent Community Resource</div>
             <h1 class="hero-title">Security Intelligence for Adobe</h1>
-            <p class="hero-subtitle">Automated monitoring and analysis of security bulletins, CVEs, and research for Adobe Commerce and Experience Manager</p>
+            <p class="hero-subtitle">An independent digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager — community-maintained, not affiliated with Adobe.</p>
             {{ $allPages := .Site.RegularPages }}
             {{ $allBulletins := where $allPages "Type" "in" (slice "post" "posts") }}
             {{ if eq (len $allBulletins) 0 }}
@@ -959,7 +983,7 @@
                             <span class="item-desc">Filtered for Adobe topics</span>
                         </div>
                     </div>
-                    <div style="margin-top: 1rem; padding: 0.75rem; background: #323232; border: 1px solid #3e3e3e; border-radius: 6px; text-align: center;">
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: #222; border: 1px solid #2a2a2a; border-radius: 6px; text-align: center;">
                         <div style="color: #b3b3b3; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Updates Every</div>
                         <div style="color: #eb1000; font-weight: 700; font-size: 0.875rem; margin-top: 0.25rem;">6 Hours</div>
                     </div>
@@ -990,12 +1014,12 @@
                 </div>
 
                 <!-- Browser Notifications -->
-                <div id="notificationSection" style="border-top:1px solid #3e3e3e; padding-top:1.5rem; margin-top:1rem; display:none;">
+                <div id="notificationSection" style="border-top:1px solid #2a2a2a; padding-top:1.5rem; margin-top:1rem; display:none;">
                     <div style="display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap;">
                         <div style="display:flex; align-items:center; gap:0.75rem;">
                             <label style="position:relative; display:inline-block; width:44px; height:24px;">
                                 <input type="checkbox" id="notificationToggle" onclick="handleNotificationToggle()" style="opacity:0; width:0; height:0;">
-                                <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#3e3e3e; border-radius:24px; transition:0.3s;"></span>
+                                <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#2a2a2a; border-radius:24px; transition:0.3s;"></span>
                                 <span style="position:absolute; content:''; height:18px; width:18px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:0.3s;"></span>
                             </label>
                             <span style="font-size:0.875rem; color:#b3b3b3;">Browser notifications</span>

@@ -49,7 +49,7 @@ jobs:
             return pr.body || '';
           result-encoding: string
 
-      - name: Check for screenshots in PR description
+      - name: Check for screenshots in PR description or committed to branch
         if: steps.check-template-changes.outputs.template_changed == 'true'
         id: check-screenshots
         run: |
@@ -62,6 +62,23 @@ jobs:
 
           # Also count actual image uploads (![...](https://...))
           IMG_COUNT=$(echo "$PR_BODY" | grep -oE "!\[.*\]\(http" | wc -l)
+
+          # Also accept screenshots committed to .github/screenshots/ as an alternative
+          if ls .github/screenshots/desktop*.png 2>/dev/null | grep -q .; then
+            DESKTOP_COUNT=$((DESKTOP_COUNT + 1))
+            IMG_COUNT=$((IMG_COUNT + 1))
+            echo "Found committed desktop screenshot"
+          fi
+          if ls .github/screenshots/tablet*.png 2>/dev/null | grep -q .; then
+            TABLET_COUNT=$((TABLET_COUNT + 1))
+            IMG_COUNT=$((IMG_COUNT + 1))
+            echo "Found committed tablet screenshot"
+          fi
+          if ls .github/screenshots/mobile*.png 2>/dev/null | grep -q .; then
+            MOBILE_COUNT=$((MOBILE_COUNT + 1))
+            IMG_COUNT=$((IMG_COUNT + 1))
+            echo "Found committed mobile screenshot"
+          fi
 
           echo "Desktop screenshots found: $DESKTOP_COUNT"
           echo "Tablet screenshots found: $TABLET_COUNT"
