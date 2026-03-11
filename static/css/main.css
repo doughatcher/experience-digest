@@ -1744,7 +1744,7 @@ body {
 .xd-logo svg {
     width: 32px;
     height: 32px;
-    fill: #14b8a6;
+    fill: #f97316;
 }
 
 .xd-logo-text {
@@ -1972,7 +1972,7 @@ body {
 }
 
 .card-title a:hover {
-    color: #14b8a6;
+    color: #f97316;
 }
 
 /* Content card styling */
@@ -1980,7 +1980,7 @@ body {
 .card-summary h2 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #14b8a6;
+    color: #f97316;
     margin: 1rem 0 0.5rem 0;
 }
 
@@ -1988,7 +1988,7 @@ body {
 .card-summary h3 {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #2dd4bf;
+    color: #fb923c;
     margin: 0.75rem 0 0.5rem 0;
 }
 
@@ -2016,7 +2016,7 @@ body {
 .content-card li:hover,
 .card-summary li:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-left-color: #0d9488;
+    border-left-color: #ea580c;
 }
 
 .content-card li strong,
@@ -2102,11 +2102,11 @@ body {
 }
 
 .xd-btn-accent {
-    background: #0d9488;
+    background: #ea580c;
 }
 
 .xd-btn-accent:hover {
-    background: #0f766e;
+    background: #c2410c;
 }
 
 /* Button aliases for backwards compatibility */
@@ -2131,11 +2131,11 @@ body {
 }
 
 .btn-primary {
-    background: #0d9488;
+    background: #ea580c;
 }
 
 .btn-primary:hover {
-    background: #0f766e;
+    background: #c2410c;
 }
 
 .btn-secondary {
@@ -2203,7 +2203,7 @@ body {
 
 .subscribe-button {
     padding: 0.625rem 1.25rem;
-    background: #0d9488;
+    background: #ea580c;
     color: white;
     border: none;
     border-radius: 4px;
@@ -2214,7 +2214,7 @@ body {
 }
 
 .subscribe-button:hover {
-    background: #0f766e;
+    background: #c2410c;
 }
 
 .subscribe-features {
@@ -2229,7 +2229,7 @@ body {
 
 .subscribe-features span::before {
     content: '✓';
-    color: #2d9d78;
+    color: #ea580c;
     margin-right: 0.5rem;
     font-weight: bold;
 }
