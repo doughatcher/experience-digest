@@ -1,6 +1,7 @@
 .hugo_build.lock
 public/
 .DS_Store
+._*
 .env
 .session-cookie
 __pycache__/
@@ -15,9 +16,11 @@ hugo
 hugo_*
 *.tar.gz
 
+# Content and data (managed by Micro.blog, not git)
 content/
 !content/products/
 !content/archive/
+data/
 
 # Backup archives
 backups/

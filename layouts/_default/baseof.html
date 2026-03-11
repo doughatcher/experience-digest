@@ -30,18 +30,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MGNDLTX9R3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-MGNDLTX9R3');
-    </script>
-    
-    <!-- Notifications System -->
-    <script src="/js/notifications.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     
@@ -74,7 +62,7 @@
             <h3 class="subscribe-title">Stay Ahead of Security Threats</h3>
             <p class="subscribe-desc">Get bulletins and research updates delivered to your inbox</p>
             <form method="POST" action="https://micro.blog/users/subscribe/267908" class="subscribe-form">
-                <input type="text" name="email" size="30" placeholder="Your email address" class="subscribe-input" />
+                <input type="email" name="email" size="30" placeholder="Your email address" class="subscribe-input" />
                 <input type="submit" value="Subscribe" class="subscribe-button" />
             </form>
             <div class="subscribe-features">
@@ -91,7 +79,10 @@
                 <a href="https://mastodon.social/deck/@adobedigest" target="_blank" rel="noopener me" class="social-link">Mastodon</a>
                 <a href="https://bsky.app/profile/adobedigest.bsky.social" target="_blank" rel="noopener" class="social-link">Bluesky</a>
             </div>
-            <p class="footer-disclaimer">Independent community resource, not affiliated with Adobe</p>
+            <p class="footer-disclaimer" style="margin-top: 1.5rem; padding: 1rem; border: 1px solid #374151; border-radius: 0.5rem; background: #1f2937; font-size: 0.875rem; color: #d1d5db; text-align: center;">
+                <strong>Independent Community Resource</strong><br>
+                This site is maintained by <a href="https://doughatcher.com/" style="color: #60a5fa;">Doug Hatcher</a> and is not affiliated with, endorsed by, or sponsored by Adobe, Inc. Adobe is a trademark of Adobe, Inc.
+            </p>
         </div>
     </footer>
 </body>

@@ -25,18 +25,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MGNDLTX9R3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-MGNDLTX9R3');
-    </script>
-    
-    <!-- Notifications System -->
-    <script src="/js/notifications.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -857,15 +845,11 @@
 
             <!-- Sidebar -->
             <aside class="sidebar">
-                <!-- Ad Callout -->
-                <div class="ad-callout" id="adCallout">
-                    <button class="ad-close" onclick="document.getElementById('adCallout').classList.add('hidden'); localStorage.setItem('hideAd', 'true');" aria-label="Close">&times;</button>
-                    <div class="ad-title">Sponsored</div>
-                    <div class="ad-content">
-                        <strong style="font-size: 0.9375rem;">Need Adobe Commerce Security Consulting?</strong>
-                        <p style="margin-top: 0.5rem; font-size: 0.8125rem; line-height: 1.4;">Expert security audits, patch management, and compliance support.</p>
-                    </div>
-                    <a href="https://doughatcher.com/consulting/" class="ad-cta" target="_blank" rel="noopener noreferrer">Learn More →</a>
+                <!-- About / Consulting -->
+                <div class="sidebar-card" id="aboutCallout">
+                    <h3 class="sidebar-card-title">About This Site</h3>
+                    <p style="font-size: 0.8125rem; line-height: 1.4; color: #9ca3af;">An independent community resource maintained by <a href="https://doughatcher.com/" style="color: #60a5fa;" target="_blank" rel="noopener noreferrer">Doug Hatcher</a>. Not affiliated with Adobe, Inc.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.8125rem; line-height: 1.4; color: #9ca3af;">Need help with Adobe Commerce security? <a href="https://doughatcher.com/consulting/" style="color: #60a5fa;" target="_blank" rel="noopener noreferrer">Learn about consulting services</a>.</p>
                 </div>
 
                 <!-- Quick Stats -->
@@ -1004,7 +988,7 @@
                 <h3 class="subscribe-title">Stay Ahead of Security Threats</h3>
                 <p class="subscribe-desc">Get bulletins and research updates delivered to your inbox</p>
                 <form method="POST" action="https://micro.blog/users/subscribe/267908" class="subscribe-form">
-                    <input type="text" name="email" placeholder="Your email address" class="subscribe-input" required />
+                    <input type="email" name="email" placeholder="Your email address" class="subscribe-input" required />
                     <button type="submit" class="spectrum-btn">Subscribe</button>
                 </form>
                 <div class="subscribe-features">
