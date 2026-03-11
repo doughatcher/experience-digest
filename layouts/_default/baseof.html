@@ -13,7 +13,7 @@
     <meta name="description" content="{{ if .IsHome }}An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
     <meta name="author" content="Doug Hatcher">
     <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
-    <meta property="og:site_name" content="Adobe Digest — Independent Community Resource">
+    <meta property="og:site_name" content="Experience Digest — Independent Community Resource">
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ if .IsHome }}An independent community digest tracking security bulletins, CVEs, and research for Adobe Commerce and Experience Manager. Not affiliated with Adobe.{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
     <meta name="twitter:card" content="summary">
@@ -33,31 +33,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     
-    <!-- Spectrum Design System Styles with Cache Busting -->
+    <!-- Site Styles with Cache Busting -->
     <link rel="stylesheet" href="/css/main.css?v={{ now.Unix }}">
 </head>
 <body>
-    <header class="spectrum-header">
-        <div class="spectrum-header-container">
-            <a href="/" class="spectrum-logo">
+    <header class="xd-header">
+        <div class="xd-header-container">
+            <a href="/" class="xd-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="#EF4444" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    <path fill="#14b8a6" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                     <path fill="#0f0f0f" d="M12 3.19l7 3.11v5.7c0 4.52-2.98 8.69-7 9.93-4.02-1.24-7-5.41-7-9.93V6.3l7-3.11z"/>
-                    <path fill="#EF4444" d="M12 7v10m-5-5h10" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/>
+                    <path fill="#14b8a6" d="M12 7v10m-5-5h10" stroke="#14b8a6" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
-                <span class="spectrum-logo-text">Adobe Digest</span>
+                <span class="xd-logo-text">Experience Digest</span>
             </a>
-            <nav class="spectrum-nav">
-                <a href="/archive/" class="spectrum-nav-link">Archive</a>
-                <a href="https://adobedigest.com/feed.json" class="spectrum-nav-link">RSS</a>
-                <a href="https://github.com/doughatcher/adobe-digest" class="spectrum-nav-link" target="_blank" rel="noopener">GitHub</a>
+            <nav class="xd-nav">
+                <a href="/archive/" class="xd-nav-link">Archive</a>
+                <a href="https://experiencedigest.org/feed.json" class="xd-nav-link">RSS</a>
+                <a href="https://github.com/doughatcher/adobe-digest" class="xd-nav-link" target="_blank" rel="noopener">GitHub</a>
             </nav>
         </div>
     </header>
     
     {{ block "main" . }}{{ end }}
     
-    <footer class="spectrum-footer">
+    <footer class="xd-footer">
         <div class="subscribe-card">
             <h3 class="subscribe-title">Stay Ahead of Security Threats</h3>
             <p class="subscribe-desc">Get bulletins and research updates delivered to your inbox</p>
@@ -75,9 +75,9 @@
         <div class="footer-social">
             <p class="social-title">Follow on Social</p>
             <div class="social-links">
-                <a href="https://micro.blog/adobedigest" target="_blank" rel="noopener" class="social-link">Micro.blog</a>
-                <a href="https://mastodon.social/deck/@adobedigest" target="_blank" rel="noopener me" class="social-link">Mastodon</a>
-                <a href="https://bsky.app/profile/adobedigest.bsky.social" target="_blank" rel="noopener" class="social-link">Bluesky</a>
+                <a href="https://micro.blog/experiencedigest" target="_blank" rel="noopener" class="social-link">Micro.blog</a>
+                <a href="https://mastodon.social/deck/@experiencedigest" target="_blank" rel="noopener me" class="social-link">Mastodon</a>
+                <a href="https://bsky.app/profile/experiencedigest.bsky.social" target="_blank" rel="noopener" class="social-link">Bluesky</a>
             </div>
             <p class="footer-disclaimer" style="margin-top: 1.5rem; padding: 1rem; border: 1px solid #374151; border-radius: 0.5rem; background: #1f2937; font-size: 0.875rem; color: #d1d5db; text-align: center;">
                 <strong>Independent Community Resource</strong><br>

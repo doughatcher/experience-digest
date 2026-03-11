@@ -1,5 +1,5 @@
 {
-  "title": "Adobe Digest",
+  "title": "Experience Digest",
   "baseURL": "/",
   "menu": {},
   "mediaTypes": {
@@ -104,7 +104,7 @@
     "author": {
       "name": "Doug Hatcher",
       "avatar": "https://avatars.micro.blog/avatars/2025/42/1836278.jpg",
-      "username": "adobedigest",
+      "username": "experiencedigest",
       "activitypub": {
         "username": "[ACTIVITYPUB_USERNAME]",
         "url": "[ACTIVITYPUB_ACTOR]"

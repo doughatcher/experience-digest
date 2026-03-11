@@ -1714,8 +1714,8 @@ body {
     min-height: 100vh;
 }
 
-/* Spectrum Header */
-.spectrum-header {
+/* Site Header */
+.xd-header {
     background: #252525;
     border-bottom: 1px solid #404040;
     position: sticky;
@@ -1724,7 +1724,7 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.spectrum-header-container {
+.xd-header-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 1rem 2rem;
@@ -1733,7 +1733,7 @@ body {
     justify-content: space-between;
 }
 
-.spectrum-logo {
+.xd-logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -1741,26 +1741,26 @@ body {
     opacity: 0.95;
 }
 
-.spectrum-logo svg {
+.xd-logo svg {
     width: 32px;
     height: 32px;
-    fill: #ff4444;
+    fill: #14b8a6;
 }
 
-.spectrum-logo-text {
+.xd-logo-text {
     font-size: 1.25rem;
     font-weight: 600;
     color: #e8e8e8;
     letter-spacing: -0.01em;
 }
 
-.spectrum-nav {
+.xd-nav {
     display: flex;
     gap: 0.25rem;
     align-items: center;
 }
 
-.spectrum-nav-link {
+.xd-nav-link {
     padding: 0.5rem 1rem;
     color: #d1d1d1;
     text-decoration: none;
@@ -1770,7 +1770,7 @@ body {
     transition: all 0.15s ease;
 }
 
-.spectrum-nav-link:hover {
+.xd-nav-link:hover {
     background: #3e3e3e;
     color: #fff;
 }
@@ -1811,14 +1811,14 @@ body {
 
 .section-action {
     font-size: 0.875rem;
-    color: #4b9cf5;
+    color: #818cf8;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.15s ease;
 }
 
 .section-action:hover {
-    color: #378ef0;
+    color: #6366f1;
 }
 
 /* Cards */
@@ -1886,7 +1886,7 @@ body {
 }
 
 .news-title a:hover, .post-title a:hover {
-    color: #4b9cf5;
+    color: #818cf8;
 }
 
 /* Grid Cards */
@@ -1972,7 +1972,7 @@ body {
 }
 
 .card-title a:hover {
-    color: #ff4444;
+    color: #14b8a6;
 }
 
 /* Content card styling */
@@ -1980,7 +1980,7 @@ body {
 .card-summary h2 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #ff4444;
+    color: #14b8a6;
     margin: 1rem 0 0.5rem 0;
 }
 
@@ -1988,7 +1988,7 @@ body {
 .card-summary h3 {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #f87171;
+    color: #2dd4bf;
     margin: 0.75rem 0 0.5rem 0;
 }
 
@@ -2016,7 +2016,7 @@ body {
 .content-card li:hover,
 .card-summary li:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-left-color: #eb1000;
+    border-left-color: #0d9488;
 }
 
 .content-card li strong,
@@ -2032,14 +2032,14 @@ body {
 
 .content-card a,
 .card-summary a {
-    color: #4b9cf5;
+    color: #818cf8;
     text-decoration: none;
     transition: color 0.15s ease;
 }
 
 .content-card a:hover,
 .card-summary a:hover {
-    color: #7db8f7;
+    color: #a5b4fc;
     text-decoration: underline;
 }
 
@@ -2064,13 +2064,13 @@ body {
     margin: 2.5rem 0;
 }
 
-.spectrum-btn {
+.xd-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.625rem 1.25rem;
-    background: #1473e6;
+    background: #6366f1;
     color: white;
     text-decoration: none;
     border-radius: 4px;
@@ -2080,33 +2080,33 @@ body {
     border: 2px solid transparent;
 }
 
-.spectrum-btn svg {
+.xd-btn svg {
     width: 18px;
     height: 18px;
 }
 
-.spectrum-btn:hover {
-    background: #0d66d0;
+.xd-btn:hover {
+    background: #4f46e5;
 }
 
-.spectrum-btn-secondary {
+.xd-btn-secondary {
     background: transparent;
     color: #d1d1d1;
     border-color: #6e6e6e;
 }
 
-.spectrum-btn-secondary:hover {
+.xd-btn-secondary:hover {
     background: #3e3e3e;
     border-color: #8e8e8e;
     color: #fff;
 }
 
-.spectrum-btn-accent {
-    background: #eb1000;
+.xd-btn-accent {
+    background: #0d9488;
 }
 
-.spectrum-btn-accent:hover {
-    background: #d10d00;
+.xd-btn-accent:hover {
+    background: #0f766e;
 }
 
 /* Button aliases for backwards compatibility */
@@ -2116,7 +2116,7 @@ body {
     justify-content: center;
     gap: 0.5rem;
     padding: 0.625rem 1.25rem;
-    background: #1473e6;
+    background: #6366f1;
     color: white;
     text-decoration: none;
     border-radius: 4px;
@@ -2127,15 +2127,15 @@ body {
 }
 
 .btn:hover {
-    background: #0d66d0;
+    background: #4f46e5;
 }
 
 .btn-primary {
-    background: #eb1000;
+    background: #0d9488;
 }
 
 .btn-primary:hover {
-    background: #d10d00;
+    background: #0f766e;
 }
 
 .btn-secondary {
@@ -2197,13 +2197,13 @@ body {
 
 .subscribe-input:focus {
     outline: none;
-    border-color: #1473e6;
-    box-shadow: 0 0 0 1px #1473e6;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1;
 }
 
 .subscribe-button {
     padding: 0.625rem 1.25rem;
-    background: #eb1000;
+    background: #0d9488;
     color: white;
     border: none;
     border-radius: 4px;
@@ -2214,7 +2214,7 @@ body {
 }
 
 .subscribe-button:hover {
-    background: #d10d00;
+    background: #0f766e;
 }
 
 .subscribe-features {
@@ -2235,7 +2235,7 @@ body {
 }
 
 /* Footer */
-.spectrum-footer {
+.xd-footer {
     border-top: 1px solid #3e3e3e;
     margin-top: 4rem;
     padding-top: 2rem;
@@ -2270,7 +2270,7 @@ body {
 }
 
 .social-link:hover {
-    color: #4b9cf5;
+    color: #818cf8;
 }
 
 .footer-disclaimer {
@@ -2304,13 +2304,13 @@ body {
 }
 
 .content-wrapper a {
-    color: #4b9cf5;
+    color: #818cf8;
     text-decoration: none;
     transition: color 0.15s ease;
 }
 
 .content-wrapper a:hover {
-    color: #378ef0;
+    color: #6366f1;
     text-decoration: underline;
 }
 
@@ -2331,7 +2331,7 @@ body {
 }
 
 .content-wrapper blockquote {
-    border-left: 3px solid #4b9cf5;
+    border-left: 3px solid #818cf8;
     padding-left: 1rem;
     margin: 1rem 0;
     color: #b3b3b3;
@@ -2399,7 +2399,7 @@ body {
 }
 
 .breadcrumb a:hover {
-    color: #4b9cf5;
+    color: #818cf8;
 }
 
 .breadcrumb span {
@@ -2412,7 +2412,7 @@ body {
     font-weight: 500;
 }
 
-/* Page Header - Spectrum clean style */
+/* Page Header */
 .page-header {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
@@ -2485,24 +2485,24 @@ body {
 }
 
 .tag {
-    color: #4b9cf5;
+    color: #818cf8;
     text-decoration: none;
     transition: color 0.15s ease;
 }
 
 .tag:hover {
-    color: #378ef0;
+    color: #6366f1;
 }
 
 .read-more {
-    color: #4b9cf5;
+    color: #818cf8;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.15s ease;
 }
 
 .read-more:hover {
-    color: #378ef0;
+    color: #6366f1;
 }
 
 /* Pagination */
@@ -2562,11 +2562,11 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .spectrum-header-container {
+    .xd-header-container {
         padding: 1rem;
     }
     
-    .spectrum-nav {
+    .xd-nav {
         display: none;
     }
     
@@ -2594,7 +2594,7 @@ body {
         flex-direction: column;
     }
     
-    .spectrum-btn {
+    .xd-btn {
         width: 100%;
     }
     

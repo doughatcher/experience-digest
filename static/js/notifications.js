@@ -1,13 +1,13 @@
 /**
- * Browser Notifications for Adobe Digest
+ * Browser Notifications for Experience Digest
  * Manages push notifications for new security bulletins
  */
 
 (function() {
     'use strict';
 
-    const STORAGE_KEY = 'adobeDigestNotifications';
-    const LAST_CHECK_KEY = 'adobeDigestLastCheck';
+    const STORAGE_KEY = 'xdNotifications';
+    const LAST_CHECK_KEY = 'xdLastCheck';
     const CHECK_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
     class NotificationManager {
@@ -108,7 +108,7 @@
          */
         showWelcomeNotification() {
             this.showNotification(
-                'Adobe Digest Notifications Enabled',
+                'Experience Digest Notifications Enabled',
                 'You\'ll receive notifications when new security bulletins are posted.',
                 '/favicon.ico'
             );
@@ -127,7 +127,7 @@
                     body: body,
                     icon: icon,
                     badge: icon,
-                    tag: 'adobe-digest',
+                    tag: 'experience-digest',
                     requireInteraction: false,
                     silent: false
                 });
@@ -192,7 +192,7 @@
                 if (!this.lastCheck || latestDate > this.lastCheck) {
                     // Show notification for the new bulletin
                     this.showNotification(
-                        'New Adobe Security Bulletin',
+                        'New Security Bulletin',
                         latestItem.title,
                         '/favicon.ico',
                         latestItem.url
@@ -225,18 +225,18 @@
     }
 
     // Create global instance
-    window.adobeDigestNotifications = new NotificationManager();
+    window.xdNotifications = new NotificationManager();
 
     // Start periodic checks when page loads
     document.addEventListener('DOMContentLoaded', function() {
-        if (window.adobeDigestNotifications.enabled) {
-            window.adobeDigestNotifications.startPeriodicChecks();
+        if (window.xdNotifications.enabled) {
+            window.xdNotifications.startPeriodicChecks();
         }
     });
 
     // Expose utility function to toggle notifications
-    window.toggleAdobeDigestNotifications = async function() {
-        const manager = window.adobeDigestNotifications;
+    window.toggleXdNotifications = async function() {
+        const manager = window.xdNotifications;
         
         if (!manager.isSupported()) {
             alert('Notifications are not supported in your browser.');

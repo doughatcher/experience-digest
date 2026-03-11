@@ -1,7 +1,7 @@
 {
-    "name": "Adobe Digest",
-    "short_name": "Adobe Digest",
-    "description": "Independent Adobe security bulletins and research digest",
+    "name": "Experience Digest",
+    "short_name": "Experience Digest",
+    "description": "Independent security bulletins and research for Adobe Commerce and Experience Manager",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

@@ -1,5 +1,5 @@
 {
-  "name": "adobe-digest",
+  "name": "experience-digest",
   "version": "1.0.0",
   "description": "Automated security bulletin and research aggregator for Adobe Commerce and Experience Manager",
   "private": true,

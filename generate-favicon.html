@@ -16,20 +16,53 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         
-        // Adobe logo in red
-        ctx.fillStyle = '#EF4444';
+        // Experience Digest shield+plus favicon
+        const size = 512;
+        const cx = size / 2;
+        const cy = size / 2;
         
-        // Scale factor for 512x512 canvas
-        const scale = 512 / 240;
+        // Draw shield outline (filled)
+        ctx.fillStyle = '#14b8a6';
+        ctx.beginPath();
+        // Shield shape: pointed bottom, flat top with slight curve
+        ctx.moveTo(cx, size * 0.04);  // top center
+        ctx.lineTo(size * 0.12, size * 0.2);  // top-left
+        ctx.lineTo(size * 0.12, size * 0.5);  // mid-left
+        ctx.quadraticCurveTo(size * 0.12, size * 0.78, cx, size * 0.96);  // bottom curve left
+        ctx.quadraticCurveTo(size * 0.88, size * 0.78, size * 0.88, size * 0.5);  // bottom curve right
+        ctx.lineTo(size * 0.88, size * 0.2);  // mid-right to top-right
+        ctx.closePath();
+        ctx.fill();
         
-        ctx.save();
-        ctx.scale(scale, scale);
+        // Draw shield inner (dark background)
+        ctx.fillStyle = '#0f0f0f';
+        ctx.beginPath();
+        const inset = size * 0.06;
+        ctx.moveTo(cx, size * 0.04 + inset * 0.7);
+        ctx.lineTo(size * 0.12 + inset, size * 0.2 + inset * 0.5);
+        ctx.lineTo(size * 0.12 + inset, size * 0.5);
+        ctx.quadraticCurveTo(size * 0.12 + inset, size * 0.75, cx, size * 0.92);
+        ctx.quadraticCurveTo(size * 0.88 - inset, size * 0.75, size * 0.88 - inset, size * 0.5);
+        ctx.lineTo(size * 0.88 - inset, size * 0.2 + inset * 0.5);
+        ctx.closePath();
+        ctx.fill();
         
-        // Draw Adobe logo paths
-        const path = new Path2D('M42.5 0h155L147 233.85 42.5 0z M90 0H0l90 163.6V0z M150 0h90L150 163.6V0z M106 176.1l18.5-48.8h32.7L132.5 234 106 176.1z');
-        ctx.fill(path);
+        // Draw plus sign
+        ctx.strokeStyle = '#14b8a6';
+        ctx.lineWidth = size * 0.06;
+        ctx.lineCap = 'round';
         
-        ctx.restore();
+        // Vertical line of plus
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - size * 0.15);
+        ctx.lineTo(cx, cy + size * 0.15);
+        ctx.stroke();
+        
+        // Horizontal line of plus
+        ctx.beginPath();
+        ctx.moveTo(cx - size * 0.15, cy);
+        ctx.lineTo(cx + size * 0.15, cy);
+        ctx.stroke();
         
         function download(size, filename) {
             const tempCanvas = document.createElement('canvas');
