@@ -997,20 +997,6 @@
                     <span>Zero spam</span>
                 </div>
 
-                <!-- Browser Notifications -->
-                <div id="notificationSection" style="border-top:1px solid #2a2a2a; padding-top:1.5rem; margin-top:1rem; display:none;">
-                    <div style="display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap;">
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <label style="position:relative; display:inline-block; width:44px; height:24px;">
-                                <input type="checkbox" id="notificationToggle" onclick="handleNotificationToggle()" style="opacity:0; width:0; height:0;">
-                                <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#2a2a2a; border-radius:24px; transition:0.3s;"></span>
-                                <span style="position:absolute; content:''; height:18px; width:18px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:0.3s;"></span>
-                            </label>
-                            <span style="font-size:0.875rem; color:#b3b3b3;">Browser notifications</span>
-                        </div>
-                        <span id="notificationStatus" style="font-size:0.8125rem; color:#b3b3b3;"></span>
-                    </div>
-                </div>
             </div>
 
             <div class="footer-social">
@@ -1026,78 +1012,12 @@
     </div>
 
     <script>
-        // Check if ad was previously closed
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('hideAd') === 'true') {
                 const ad = document.getElementById('adCallout');
                 if (ad) ad.classList.add('hidden');
             }
-            updateNotificationToggle();
         });
-
-        async function handleNotificationToggle() {
-            const toggle = document.getElementById('notificationToggle');
-            const status = document.getElementById('notificationStatus');
-            
-            if (!window.xdNotifications) {
-                status.textContent = 'Error loading';
-                toggle.checked = false;
-                return;
-            }
-            
-            const manager = window.xdNotifications;
-            
-            if (!manager.isSupported()) {
-                status.textContent = 'Not supported';
-                toggle.disabled = true;
-                toggle.checked = false;
-                return;
-            }
-            
-            if (toggle.checked) {
-                const granted = await manager.requestPermission();
-                if (granted) {
-                    status.textContent = 'Enabled';
-                    manager.startPeriodicChecks();
-                } else {
-                    status.textContent = 'Denied';
-                    toggle.checked = false;
-                    toggle.disabled = true;
-                }
-            } else {
-                manager.disable();
-                status.textContent = 'Disabled';
-            }
-        }
-
-        function updateNotificationToggle() {
-            const toggle = document.getElementById('notificationToggle');
-            const status = document.getElementById('notificationStatus');
-            const section = document.getElementById('notificationSection');
-            
-            if (!window.xdNotifications) return;
-            
-            const manager = window.xdNotifications;
-            
-            if (!manager.isSupported()) {
-                section.style.display = 'none';
-                return;
-            }
-            
-            section.style.display = 'block';
-            
-            if (manager.enabled && manager.getPermission() === 'granted') {
-                toggle.checked = true;
-                status.textContent = 'Enabled';
-            } else if (manager.getPermission() === 'denied') {
-                status.textContent = 'Denied';
-                toggle.disabled = true;
-                toggle.checked = false;
-            } else {
-                toggle.checked = false;
-                status.textContent = 'Disabled';
-            }
-        }
     </script>
 </body>
 </html>
