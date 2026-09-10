@@ -11,6 +11,11 @@ feed.json  →  syndicate.py  →  adapters/devto.py  →  dev.to (auto-post w/ 
 
 `syndicated.json` tracks what's been syndicated where so we never double-post.
 
+The site feed mixes long-form articles with micro.blog short posts (the
+auto-scraped bulletin notes). `SYNDICATE_URL_FILTER` (default `/blog/`)
+keeps only long-form articles and drops the section index, so short posts
+can't crowd real articles out of the `--limit` candidate window.
+
 ## Why dev.to
 
 dev.to honors `canonical_url` in the article payload — Google attributes

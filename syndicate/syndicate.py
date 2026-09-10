@@ -25,6 +25,12 @@ load_dotenv(HERE.parent / ".env")
 FEED_URL = os.getenv("SYNDICATE_FEED_URL", "https://experiencedigest.org/feed.json")
 TRACKING_FILE = HERE / "syndicated.json"
 
+# The site feed mixes long-form articles with micro.blog short posts (the
+# auto-scraped bulletin notes from scrape-and-post). Only long-form articles
+# belong on dev.to; short posts crowd them out of the candidate window and
+# read as spam if cross-posted. Long-form URLs live under /blog/.
+URL_FILTER = os.getenv("SYNDICATE_URL_FILTER", "/blog/")
+
 
 def load_tracking() -> dict:
     if not TRACKING_FILE.exists():
@@ -58,6 +64,17 @@ def main() -> int:
     print(f"Fetching {FEED_URL}")
     items = fetch_feed()
     print(f"  {len(items)} items in feed")
+
+    if URL_FILTER:
+        before = len(items)
+        items = [
+            it for it in items
+            if URL_FILTER in (it.get("url") or "")
+            # exclude the section index itself (.../blog/), keep only articles
+            and not (it.get("url") or "").rstrip("/").endswith(URL_FILTER.strip("/"))
+        ]
+        print(f"  {len(items)} long-form articles "
+              f"({before - len(items)} short posts filtered by '{URL_FILTER}')")
 
     for platform in platforms:
         print(f"\n=== Dispatching to {platform} ===")
