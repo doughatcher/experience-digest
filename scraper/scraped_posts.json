@@ -1068,14 +1068,18 @@
     "nist-cve-2026-75700",
     "nist-cve-2026-75701",
     "nist-cve-2026-75702",
+    "nist-cve-2026-75704",
     "nist-cve-2026-75707",
     "nist-cve-2026-75708",
     "nist-cve-2026-75712",
     "nist-cve-2026-75713",
+    "nist-cve-2026-75714",
     "nist-cve-2026-75717",
     "nist-cve-2026-75718",
+    "nist-cve-2026-75719",
     "nist-cve-2026-75724",
     "nist-cve-2026-75725",
+    "nist-cve-2026-75726",
     "nist-cve-2026-75730",
     "nist-cve-2026-75731",
     "nist-cve-2026-75736",
@@ -1091,6 +1095,7 @@
     "nist-cve-2026-79322",
     "nist-cve-2026-79323",
     "nist-cve-2026-79324",
+    "nist-cve-2026-79905",
     "pci-dss-update-2025",
     "polyfill-supply-chain-attack",
     "postponed-exfiltration-evades-detection",
@@ -1214,6 +1219,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2026-09-10T21:09:40.114005",
-  "total_count": 1213
+  "last_updated": "2026-09-11T05:08:55.678017",
+  "total_count": 1218
 }
