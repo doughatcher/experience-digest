@@ -894,12 +894,15 @@
     "nist-cve-2026-106633",
     "nist-cve-2026-107305",
     "nist-cve-2026-107682",
+    "nist-cve-2026-109415",
     "nist-cve-2026-110037",
     "nist-cve-2026-110074",
     "nist-cve-2026-110075",
+    "nist-cve-2026-110076",
     "nist-cve-2026-110077",
     "nist-cve-2026-110079",
     "nist-cve-2026-110080",
+    "nist-cve-2026-110081",
     "nist-cve-2026-110082",
     "nist-cve-2026-110083",
     "nist-cve-2026-110084",
@@ -1213,6 +1216,7 @@
     "nist-cve-2026-92908",
     "nist-cve-2026-92909",
     "nist-cve-2026-92911",
+    "nist-cve-2026-92922",
     "nist-cve-2026-95631",
     "pci-dss-update-2025",
     "polyfill-supply-chain-attack",
@@ -1226,6 +1230,7 @@
     "sansec-analysis-12-of-online-stores-leak-private-backups",
     "sansec-and-europol-counter-online",
     "sansec-atlanta-hawks-magecart",
+    "sansec-blockstrap-magento-rce",
     "sansec-brevo-supply-chain-attack",
     "sansec-cardbleed",
     "sansec-claude-finds-353-zero-days-packagist",
@@ -1338,6 +1343,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2026-10-15T12:01:02.561359",
-  "total_count": 1337
+  "last_updated": "2026-10-15T17:18:57.455284",
+  "total_count": 1342
 }
