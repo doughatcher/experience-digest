@@ -79,6 +79,7 @@
     "APSB26-98",
     "adobe-commerce-2-4-0",
     "adobe-commerce-2-4-1",
+    "adobe-commerce-2-4-10-alpha1",
     "adobe-commerce-2-4-2",
     "adobe-commerce-2-4-2-p2",
     "adobe-commerce-2-4-3",
@@ -889,6 +890,7 @@
     "nist-cve-2026-105895",
     "nist-cve-2026-106626",
     "nist-cve-2026-106628",
+    "nist-cve-2026-106629",
     "nist-cve-2026-106630",
     "nist-cve-2026-106631",
     "nist-cve-2026-106632",
@@ -1222,6 +1224,7 @@
     "nist-cve-2026-92910",
     "nist-cve-2026-92911",
     "nist-cve-2026-92922",
+    "nist-cve-2026-95630",
     "nist-cve-2026-95631",
     "pci-dss-update-2025",
     "polyfill-supply-chain-attack",
@@ -1348,6 +1351,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2026-10-15T21:43:02.890118",
-  "total_count": 1347
+  "last_updated": "2026-10-16T04:55:23.510991",
+  "total_count": 1350
 }
