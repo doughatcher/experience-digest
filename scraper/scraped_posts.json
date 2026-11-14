@@ -1348,6 +1348,7 @@
     "sansec-security-txt-trillion-dollar-problem",
     "sansec-sessionreaper",
     "sansec-sessionreaper-exploitation",
+    "sansec-shopify-app-supply-chain-attack",
     "sansec-shopware-fixes-store-api-admin-takeover-vulnerability",
     "sansec-sites-hacked-via-mysql-protocal-flaw",
     "sansec-skimmer-dynamic-exfiltration-shopify-bigcommerce",
@@ -1374,6 +1375,6 @@
     "vendors-defeat-magento-security-patch-simple-check",
     "virustotal-sansec"
   ],
-  "last_updated": "2026-11-13T19:59:56.836380",
-  "total_count": 1373
+  "last_updated": "2026-11-14T06:57:43.238692",
+  "total_count": 1374
 }
